@@ -40,6 +40,12 @@ export class LoadingFeatureComponent {
 	code = `import { Component, signal } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Data {
+  id: number;
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-data-table',
   standalone: true,
@@ -80,6 +86,11 @@ import { TanGrid, TanGridColumn } from 'tangrid';
 })
 export class DataTableComponent {
   loading = signal(true);
-  columns: TanGridColumn<Data>[] = [ /* ... */ ];
+  
+  columns: TanGridColumn<Data>[] = [
+    { header: 'ID', accessorKey: 'id' },
+    { header: 'Name', accessorKey: 'name' },
+    { header: 'Value', accessorKey: 'value' },
+  ];
 }`;
 }

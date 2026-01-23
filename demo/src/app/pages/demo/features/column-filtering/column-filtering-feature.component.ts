@@ -57,6 +57,15 @@ export class ColumnFilteringFeatureComponent {
 	code = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn, TanGridFilter } from 'tangrid';
 
+interface Order {
+  id: number;
+  customer: string;
+  product: string;
+  amount: number;
+  status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+  date: string;
+}
+
 @Component({
   selector: 'app-orders-table',
   standalone: true,
@@ -71,7 +80,16 @@ import { TanGrid, TanGridColumn, TanGridFilter } from 'tangrid';
   \`
 })
 export class OrdersTableComponent {
-  orders: Order[] = [ /* ... */ ];
+  orders: Order[] = [
+    { id: 1, customer: 'John Doe', product: 'Laptop', amount: 1299.99, status: 'Shipped', date: '2024-01-15' },
+    { id: 2, customer: 'Jane Smith', product: 'Mouse', amount: 29.99, status: 'Delivered', date: '2024-01-14' },
+    { id: 3, customer: 'Bob Johnson', product: 'Keyboard', amount: 149.99, status: 'Processing', date: '2024-01-16' },
+    { id: 4, customer: 'Alice Brown', product: 'Monitor', amount: 399.99, status: 'Pending', date: '2024-01-17' },
+    { id: 5, customer: 'Charlie Wilson', product: 'Headphones', amount: 199.99, status: 'Shipped', date: '2024-01-15' },
+    { id: 6, customer: 'Diana Prince', product: 'Laptop', amount: 1299.99, status: 'Delivered', date: '2024-01-13' },
+    { id: 7, customer: 'Eve Davis', product: 'Mouse', amount: 29.99, status: 'Cancelled', date: '2024-01-18' },
+    { id: 8, customer: 'Frank Miller', product: 'Keyboard', amount: 149.99, status: 'Processing', date: '2024-01-16' },
+  ];
   
   columns: TanGridColumn<Order>[] = [
     { header: 'ID', accessorKey: 'id' },
@@ -88,6 +106,7 @@ export class OrdersTableComponent {
       }
     },
     { header: 'Status', accessorKey: 'status', filterable: true },
+    { header: 'Date', accessorKey: 'date', filterable: true },
   ];
 
   onFilterChange(filters: TanGridFilter[]) {

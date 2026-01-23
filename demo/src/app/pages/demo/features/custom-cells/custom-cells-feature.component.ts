@@ -54,6 +54,15 @@ export class CustomCellsFeatureComponent implements AfterViewInit {
 	code = `import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  rating: number;
+  image: string;
+}
+
 @Component({
   selector: 'app-products-table',
   standalone: true,
@@ -87,7 +96,13 @@ export class ProductsTableComponent {
   @ViewChild('stockCell', { static: true }) stockCell!: TemplateRef<any>;
   @ViewChild('ratingCell', { static: true }) ratingCell!: TemplateRef<any>;
   
-  products: Product[] = [ /* ... */ ];
+  products: Product[] = [
+    { id: 1, name: 'Laptop Pro', price: 1299.99, stock: 15, rating: 4.5, image: 'mdi mdi-laptop' },
+    { id: 2, name: 'Wireless Mouse', price: 29.99, stock: 50, rating: 4.2, image: 'mdi mdi-mouse' },
+    { id: 3, name: 'Mechanical Keyboard', price: 149.99, stock: 30, rating: 4.8, image: 'mdi mdi-keyboard' },
+    { id: 4, name: '4K Monitor', price: 399.99, stock: 20, rating: 4.6, image: 'mdi mdi-monitor' },
+    { id: 5, name: 'Noise-Cancelling Headphones', price: 199.99, stock: 25, rating: 4.7, image: 'mdi mdi-headphones' },
+  ];
   
   columns: TanGridColumn<Product>[] = [
     { header: 'ID', accessorKey: 'id' },

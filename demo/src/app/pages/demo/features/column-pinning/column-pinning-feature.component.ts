@@ -132,6 +132,19 @@ export class ColumnPinningFeatureComponent {
 	code = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  supplier: string;
+  rating: number;
+  description: string;
+  status: string;
+  createdAt: string;
+}
+
 @Component({
   selector: 'app-pinned-table',
   standalone: true,
@@ -148,12 +161,30 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class PinnedTableComponent {
-  products: Product[] = [ /* ... */ ];
+  products: Product[] = Array.from({ length: 50 }, (_, i) => ({
+    id: \`PROD-\${String(i + 1).padStart(4, '0')}\`,
+    name: \`Product \${i + 1}\`,
+    category: ['Electronics', 'Clothing', 'Food', 'Books', 'Toys'][i % 5],
+    price: Math.round((Math.random() * 1000 + 10) * 100) / 100,
+    stock: Math.floor(Math.random() * 1000),
+    supplier: \`Supplier \${(i % 10) + 1}\`,
+    rating: Math.round((Math.random() * 4 + 1) * 10) / 10,
+    description: \`This is a detailed description for product \${i + 1} with many features and specifications.\`,
+    status: i % 3 === 0 ? 'Active' : i % 3 === 1 ? 'Pending' : 'Discontinued',
+    createdAt: new Date(2023 + (i % 2), i % 12, (i % 28) + 1).toISOString().split('T')[0],
+  }));
   
   columns: TanGridColumn<Product>[] = [
-    { header: 'ID', accessorKey: 'id' },
-    { header: 'Name', accessorKey: 'name' },
-    // ... more columns
+    { header: 'ID', accessorKey: 'id', width: '120px' },
+    { header: 'Name', accessorKey: 'name', width: '200px' },
+    { header: 'Category', accessorKey: 'category', width: '150px' },
+    { header: 'Price', accessorKey: 'price', width: '120px' },
+    { header: 'Stock', accessorKey: 'stock', width: '100px' },
+    { header: 'Supplier', accessorKey: 'supplier', width: '150px' },
+    { header: 'Rating', accessorKey: 'rating', width: '100px' },
+    { header: 'Description', accessorKey: 'description', width: '300px' },
+    { header: 'Status', accessorKey: 'status', width: '120px' },
+    { header: 'Created', accessorKey: 'createdAt', width: '120px' },
   ];
   
   // Pin columns by their accessorKey/column ID

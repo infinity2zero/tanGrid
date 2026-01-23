@@ -43,6 +43,14 @@ export class ColumnAlignmentFeatureComponent {
 	code = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Financial {
+  id: number;
+  account: string;
+  debit: number;
+  credit: number;
+  balance: number;
+}
+
 @Component({
   selector: 'app-financial-table',
   standalone: true,
@@ -55,7 +63,13 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class FinancialTableComponent {
-  financials: Financial[] = [ /* ... */ ];
+  financials: Financial[] = [
+    { id: 1, account: 'Cash', debit: 10000, credit: 0, balance: 10000 },
+    { id: 2, account: 'Accounts Receivable', debit: 5000, credit: 2000, balance: 3000 },
+    { id: 3, account: 'Inventory', debit: 15000, credit: 5000, balance: 10000 },
+    { id: 4, account: 'Equipment', debit: 25000, credit: 0, balance: 25000 },
+    { id: 5, account: 'Accounts Payable', debit: 0, credit: 8000, balance: -8000 },
+  ];
   
   columns: TanGridColumn<Financial>[] = [
     { header: 'ID', accessorKey: 'id', align: 'left' },

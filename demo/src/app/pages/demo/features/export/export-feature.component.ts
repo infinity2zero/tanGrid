@@ -105,7 +105,13 @@ interface Employee {
 export class EmployeeTableComponent {
   employees: Employee[] = [
     { id: 1, name: 'John Doe', email: 'john@example.com', department: 'Engineering', salary: 75000, joinDate: '2020-01-15' },
-    // ... more employees
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com', department: 'Marketing', salary: 65000, joinDate: '2019-03-20' },
+    { id: 3, name: 'Bob Johnson', email: 'bob@example.com', department: 'Sales', salary: 70000, joinDate: '2021-06-10' },
+    { id: 4, name: 'Alice Williams', email: 'alice@example.com', department: 'Engineering', salary: 80000, joinDate: '2018-11-05' },
+    { id: 5, name: 'Charlie Brown', email: 'charlie@example.com', department: 'HR', salary: 60000, joinDate: '2022-02-14' },
+    { id: 6, name: 'Diana Prince', email: 'diana@example.com', department: 'Marketing', salary: 68000, joinDate: '2020-09-30' },
+    { id: 7, name: 'Edward Norton', email: 'edward@example.com', department: 'Engineering', salary: 85000, joinDate: '2019-07-22' },
+    { id: 8, name: 'Fiona Apple', email: 'fiona@example.com', department: 'Sales', salary: 72000, joinDate: '2021-04-18' },
   ];
 
   columns: TanGridColumn<Employee>[] = [
@@ -133,6 +139,12 @@ export class EmployeeTableComponent {
       accessorKey: 'salary',
       sortable: true,
       accessorFn: (row) => \`$\${row.salary.toLocaleString()}\`,
+    },
+    {
+      id: 'joinDate',
+      header: 'Join Date',
+      accessorKey: 'joinDate',
+      sortable: true,
     },
   ];
 }

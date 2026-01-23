@@ -60,6 +60,15 @@ export class RowEventsFeatureComponent {
 	code = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  type: string;
+  timestamp: string;
+  read: boolean;
+}
+
 @Component({
   selector: 'app-notifications-table',
   standalone: true,
@@ -74,12 +83,21 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class NotificationsTableComponent {
-  notifications: Notification[] = [ /* ... */ ];
+  notifications: Notification[] = [
+    { id: 1, title: 'New Message', message: 'You have a new message from John', type: 'info', timestamp: '2024-01-15 10:30', read: false },
+    { id: 2, title: 'Task Completed', message: 'Your task has been completed', type: 'success', timestamp: '2024-01-15 09:15', read: true },
+    { id: 3, title: 'Payment Received', message: 'Payment of $500 received', type: 'success', timestamp: '2024-01-14 16:45', read: false },
+    { id: 4, title: 'Reminder', message: 'Don\\'t forget the meeting at 3 PM', type: 'warning', timestamp: '2024-01-14 14:20', read: true },
+    { id: 5, title: 'System Update', message: 'System will be updated tonight', type: 'info', timestamp: '2024-01-13 18:00', read: false },
+  ];
   
   columns: TanGridColumn<Notification>[] = [
     { header: 'ID', accessorKey: 'id' },
     { header: 'Title', accessorKey: 'title' },
-    // ... more columns
+    { header: 'Message', accessorKey: 'message' },
+    { header: 'Type', accessorKey: 'type' },
+    { header: 'Timestamp', accessorKey: 'timestamp' },
+    { header: 'Read', accessorKey: 'read' },
   ];
 
   onRowClick(event: { row: Notification; index: number }) {
@@ -91,6 +109,10 @@ export class NotificationsTableComponent {
     // Open details modal, navigate to detail page, etc.
     console.log('Row double-clicked:', event);
     this.openDetails(event.row);
+  }
+
+  openDetails(notification: Notification) {
+    console.log('Opening details for:', notification);
   }
 }`;
 }

@@ -52,6 +52,14 @@ export class VariantsFeatureComponent {
 	code = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Transaction {
+  id: number;
+  date: string;
+  description: string;
+  amount: number;
+  category: string;
+}
+
 @Component({
   selector: 'app-transactions-table',
   standalone: true,
@@ -96,8 +104,21 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class TransactionsTableComponent {
-  transactions: Transaction[] = [ /* ... */ ];
-  columns: TanGridColumn<Transaction>[] = [ /* ... */ ];
+  transactions: Transaction[] = [
+    { id: 1, date: '2024-01-15', description: 'Grocery Shopping', amount: -125.50, category: 'Food' },
+    { id: 2, date: '2024-01-16', description: 'Salary Deposit', amount: 5000.00, category: 'Income' },
+    { id: 3, date: '2024-01-17', description: 'Gas Station', amount: -45.00, category: 'Transport' },
+    { id: 4, date: '2024-01-18', description: 'Restaurant', amount: -85.75, category: 'Food' },
+    { id: 5, date: '2024-01-19', description: 'Freelance Work', amount: 1200.00, category: 'Income' },
+  ];
+  
+  columns: TanGridColumn<Transaction>[] = [
+    { header: 'ID', accessorKey: 'id' },
+    { header: 'Date', accessorKey: 'date' },
+    { header: 'Description', accessorKey: 'description' },
+    { header: 'Amount', accessorKey: 'amount' },
+    { header: 'Category', accessorKey: 'category' },
+  ];
 }`;
 }
 

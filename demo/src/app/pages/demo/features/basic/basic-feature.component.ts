@@ -67,7 +67,9 @@ export class ProductTableComponent {
   products: Product[] = [
     { id: 1, name: 'Laptop', category: 'Electronics', price: 999.99, stock: 15 },
     { id: 2, name: 'Mouse', category: 'Electronics', price: 29.99, stock: 50 },
-    // ... more products
+    { id: 3, name: 'Keyboard', category: 'Electronics', price: 79.99, stock: 30 },
+    { id: 4, name: 'Monitor', category: 'Electronics', price: 299.99, stock: 20 },
+    { id: 5, name: 'Headphones', category: 'Electronics', price: 149.99, stock: 25 },
   ];
 
   columns: TanGridColumn<Product>[] = [

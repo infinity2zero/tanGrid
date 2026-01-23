@@ -45,6 +45,15 @@ export class ColumnWidthFeatureComponent {
 	code = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Document {
+  id: number;
+  title: string;
+  author: string;
+  date: string;
+  size: string;
+  type: string;
+}
+
 @Component({
   selector: 'app-documents-table',
   standalone: true,
@@ -57,7 +66,13 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class DocumentsTableComponent {
-  documents: Document[] = [ /* ... */ ];
+  documents: Document[] = [
+    { id: 1, title: 'Project Proposal', author: 'John Doe', date: '2024-01-15', size: '2.5 MB', type: 'PDF' },
+    { id: 2, title: 'Meeting Notes', author: 'Jane Smith', date: '2024-01-16', size: '150 KB', type: 'DOCX' },
+    { id: 3, title: 'Budget Report', author: 'Bob Johnson', date: '2024-01-17', size: '1.2 MB', type: 'XLSX' },
+    { id: 4, title: 'Design Mockups', author: 'Alice Brown', date: '2024-01-18', size: '5.8 MB', type: 'ZIP' },
+    { id: 5, title: 'Presentation', author: 'Charlie Wilson', date: '2024-01-19', size: '3.1 MB', type: 'PPTX' },
+  ];
   
   columns: TanGridColumn<Document>[] = [
     { header: 'ID', accessorKey: 'id', width: '60px' },

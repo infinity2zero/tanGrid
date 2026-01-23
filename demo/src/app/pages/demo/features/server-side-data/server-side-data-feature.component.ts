@@ -129,49 +129,122 @@ export class ServerSideDataFeatureComponent implements OnInit {
     if (this.logs.length > 20) this.logs.pop();
   }
 
-  code = `
-// HTML
-<tan-grid
-  [data]="data"
-  [columns]="columns"
-  [loading]="loading"
-  [pagination]="true"
-  [paginationMode]="'server'"
-  [totalItems]="totalItems"
-  [pageSize]="pageSize"
-  [sorting]="true"
-  [sortingMode]="'server'"
-  [filtering]="true"
-  [filteringMode]="'server'"
-  (paginationChange)="onPaginationChange($event)"
-  (sortChange)="onSortChange($event)"
-  (filterChange)="onFilterChange($event)"
-></tan-grid>
+  code = `import { Component, OnInit } from '@angular/core';
+import { TanGrid, TanGridColumn, TanGridPagination, TanGridSort, TanGridFilter } from 'tangrid';
 
-// TS
-export class ServerSideDataComponent {
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+}
+
+@Component({
+  selector: 'app-server-data-table',
+  standalone: true,
+  imports: [TanGrid],
+  template: \`
+    <tan-grid
+      [data]="data"
+      [columns]="columns"
+      [loading]="loading"
+      [pagination]="true"
+      [paginationMode]="'server'"
+      [totalItems]="totalItems"
+      [pageSize]="pageSize"
+      [sorting]="true"
+      [sortingMode]="'server'"
+      [filtering]="true"
+      [filteringMode]="'server'"
+      (paginationChange)="onPaginationChange($event)"
+      (sortChange)="onSortChange($event)"
+      (filterChange)="onFilterChange($event)"
+    ></tan-grid>
+  \`
+})
+export class ServerSideDataComponent implements OnInit {
+  // Table State
   data: User[] = [];
   loading = false;
   totalItems = 0;
   pageIndex = 0;
   pageSize = 10;
+  
+  columns: TanGridColumn<User>[] = [
+    { header: 'ID', accessorKey: 'id', width: '60px' },
+    { header: 'Name', accessorKey: 'name', sortable: true, filterable: true },
+    { header: 'Email', accessorKey: 'email', sortable: true, filterable: true },
+    { header: 'Role', accessorKey: 'role', sortable: true, filterable: true },
+    { header: 'Status', accessorKey: 'status' },
+  ];
 
-  loadData(params: any) {
-    this.loading = true;
-    this.apiService.getUsers(params).subscribe(response => {
-      this.data = response.data;
-      this.totalItems = response.total;
-      this.loading = false;
-    });
+  // Mock Database
+  private allUsers: User[] = Array.from({ length: 100 }, (_, i) => ({
+    id: i + 1,
+    name: \`User \${i + 1}\`,
+    email: \`user\${i + 1}@example.com\`,
+    role: ['Admin', 'User', 'Editor', 'Viewer'][i % 4],
+    status: ['Active', 'Inactive', 'Pending'][i % 3],
+  }));
+
+  ngOnInit() {
+    this.loadData();
   }
 
+  // Handle Pagination
   onPaginationChange(event: TanGridPagination) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.loadData({ page: this.pageIndex, size: this.pageSize });
+    this.loadData();
   }
-  
-  // ... implement onSortChange and onFilterChange similarly
-}
-  `;
+
+  // Handle Sorting
+  onSortChange(event: TanGridSort) {
+    this.loadData(event);
+  }
+
+  // Handle Filtering
+  onFilterChange(event: TanGridFilter[]) {
+    this.loadData(undefined, event);
+  }
+
+  // Simulate Server Request
+  loadData(sort?: TanGridSort, filters?: TanGridFilter[]) {
+    this.loading = true;
+
+    // Simulate network delay
+    setTimeout(() => {
+      let filteredData = [...this.allUsers];
+
+      // Apply Filters (Server-side simulation)
+      if (filters && filters.length > 0) {
+        filters.forEach(filter => {
+          filteredData = filteredData.filter(user => {
+            const val = (user as any)[filter.columnId]?.toString().toLowerCase();
+            return val.includes(filter.value.toString().toLowerCase());
+          });
+        });
+      }
+
+      // Apply Sorting (Server-side simulation)
+      if (sort) {
+        filteredData.sort((a, b) => {
+          const valA = (a as any)[sort.columnId];
+          const valB = (b as any)[sort.columnId];
+          if (valA < valB) return sort.direction === 'asc' ? -1 : 1;
+          if (valA > valB) return sort.direction === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
+
+      // Apply Pagination (Server-side simulation)
+      this.totalItems = filteredData.length;
+      const start = this.pageIndex * this.pageSize;
+      this.data = filteredData.slice(start, start + this.pageSize);
+      
+      this.loading = false;
+    }, 800);
+  }
+}`;
 }

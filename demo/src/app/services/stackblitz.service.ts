@@ -10,68 +10,88 @@ export class StackBlitzService {
 	 * Note: This requires the tangrid package to be available on NPM.
 	 * If you are testing locally without publishing, the StackBlitz demo will fail to resolve the library.
 	 */
-	openProject(
+	getProjectConfig(
 		componentName: string,
 		files: { html: string; ts: string; css?: string },
 		title: string = 'TanGrid Demo',
-		description: string = 'TanGrid library demo'
-	) {
-		const project: Project = {
-			title,
-			description,
-			template: 'angular-cli',
-			files: {
-				'src/index.html': `
-<!doctype html>
+		description: string = 'TanGrid library demo',
+		componentSelector?: string
+	): Project {
+		// Validate inputs
+		if (!componentName || !files || !files.ts) {
+			throw new Error('Invalid component name or files provided');
+		}
+
+		// Prefer the actual class name from the TS code if we can detect it.
+		// This fixes cases where componentName is a generic value like "DemoComponent"
+		// but the code actually exports e.g. "PaginationFeatureComponent".
+		const classMatch = files.ts.match(/export class (\w+)/);
+		const effectiveComponentName = classMatch?.[1] || componentName;
+
+		const tagName = this.toKebabCase(effectiveComponentName);
+		// Use provided selector, or derive from tagName
+		let selector = componentSelector || (tagName.startsWith('app-') ? tagName : `app-${tagName}`);
+
+		// Ensure selector starts with app- (fixes mismatch where selector is inferred as 'product-table' but component is 'app-product-table')
+		if (!selector.startsWith('app-')) {
+			selector = `app-${selector}`;
+		}
+
+		// Keep the component code as-is (inline template)
+		const componentTs = files.ts;
+
+		// Build main.ts and ensure Zone.js is loaded (required by default Angular config)
+		// Escape the title and selector to prevent issues inside the template string
+		const safeTitle = title.replace(/`/g, '\\`').replace(/\${/g, '\\${');
+		const safeSelector = selector.replace(/`/g, '\\`').replace(/\${/g, '\\${');
+
+		const mainTsContent = `import 'zone.js';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { Component } from '@angular/core';
+import { ${effectiveComponentName} } from './app/${tagName}.component';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [${effectiveComponentName}],
+  template: '<div style="padding: 20px;"><h1>${safeTitle}</h1><${safeSelector}></${safeSelector}></div>'
+})
+export class App {}
+
+bootstrapApplication(App);`;
+
+		const projectFiles: Record<string, string> = {
+			'index.html': `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <title>TanGrid Demo</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <app-root></app-root>
 </body>
 </html>`,
-				'src/main.ts': `
-import { bootstrapApplication } from '@angular/platform-browser';
-import { Component } from '@angular/core';
-import { ${componentName} } from './app/${this.toKebabCase(componentName)}.component';
+			'src/main.ts': mainTsContent,
+			[`src/app/${tagName}.component.ts`]: componentTs,
+		};
 
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [${componentName}],
-  template: \`
-    <div style="padding: 20px;">
-      <h1>${title}</h1>
-      <${this.toKebabCase(componentName)}></${this.toKebabCase(componentName)}>
-    </div>
-  \`
-})
-export class App {}
+		// Only add HTML file if we have actual HTML content (not just a placeholder)
+		if (files.html && files.html.trim() && !files.html.startsWith('<!--')) {
+			projectFiles[`src/app/${tagName}.component.html`] = files.html;
+		}
 
-bootstrapApplication(App);
-`,
-				[`src/app/${this.toKebabCase(componentName)}.component.ts`]: files.ts,
-				[`src/app/${this.toKebabCase(componentName)}.component.html`]: files.html,
-				...(files.css
-					? { [`src/app/${this.toKebabCase(componentName)}.component.css`]: files.css }
-					: {}),
-				// Global styles to match the demo theme roughly
-				'src/styles.css': `
-:root {
-  --ngs-primary: #3b82f6;
-  --ngs-primary-fg: #ffffff;
-  --ngs-bg-primary: #ffffff;
-  --ngs-text-primary: #1f2937;
-  --ngs-border-color: #e5e7eb;
-}
-body { font-family: system-ui, -apple-system, sans-serif; }
-`,
-			},
+		// Add minimal global styles (no CSS tokens needed - let StackBlitz handle it)
+		projectFiles['src/styles.css'] = `/* Global Styles */
+html, body { height: 100%; margin: 0; }
+body { font-family: Roboto, "Helvetica Neue", sans-serif; }`;
+
+		return {
+			title,
+			description,
+			template: 'angular-cli',
+			files: projectFiles,
 			dependencies: {
 				'@angular/core': '^18.0.0',
 				'@angular/common': '^18.0.0',
@@ -79,16 +99,24 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 				'@angular/compiler': '^18.0.0',
 				'@angular/forms': '^18.0.0',
 				'@angular/router': '^18.0.0',
+				'@angular/cdk': '^18.0.0',
 				'rxjs': '^7.8.0',
 				'tslib': '^2.3.0',
 				'zone.js': '~0.14.0',
-				// Crucial: This assumes the library is published.
-				// If not, we might need to point to a tarball or use a different strategy.
 				'tangrid': 'latest',
 				'@tanstack/angular-table': '^8.0.0',
 			},
 		};
+	}
 
+	openProject(
+		componentName: string,
+		files: { html: string; ts: string; css?: string },
+		title: string = 'TanGrid Demo',
+		description: string = 'TanGrid library demo',
+		componentSelector?: string
+	) {
+		const project = this.getProjectConfig(componentName, files, title, description, componentSelector);
 		sdk.openProject(project, { openFile: `src/app/${this.toKebabCase(componentName)}.component.ts` });
 	}
 
@@ -99,4 +127,5 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 			.toLowerCase()
 			.replace(/-component$/, ''); // Remove -component suffix if present to avoid double naming
 	}
+
 }

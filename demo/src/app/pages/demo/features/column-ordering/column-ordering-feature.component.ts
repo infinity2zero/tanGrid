@@ -91,7 +91,13 @@ interface User {
   \`
 })
 export class ColumnOrderingTableComponent {
-  users: User[] = [ /* ... */ ];
+  users: User[] = [
+    { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active', createdAt: '2024-01-15' },
+    { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'Editor', status: 'Pending', createdAt: '2024-02-03' },
+    { id: 3, name: 'Carol Davis', email: 'carol@example.com', role: 'Viewer', status: 'Inactive', createdAt: '2024-02-20' },
+    { id: 4, name: 'David Wilson', email: 'david@example.com', role: 'Editor', status: 'Active', createdAt: '2024-03-01' },
+    { id: 5, name: 'Emma Brown', email: 'emma@example.com', role: 'Admin', status: 'Active', createdAt: '2024-03-12' },
+  ];
 
   columns: TanGridColumn<User>[] = [
     { header: 'ID', accessorKey: 'id' },

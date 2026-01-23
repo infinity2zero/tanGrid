@@ -62,6 +62,7 @@ import { StackBlitzEmbedComponent } from '../stackblitz-embed/stackblitz-embed.c
 						[componentName]="componentName"
 						[files]="parsedFiles()"
 						[title]="title"
+						[selector]="selector"
 					></ngsd-stackblitz-embed>
 				} @else {
 					<pre><code>{{ code }}</code></pre>
@@ -195,18 +196,64 @@ export class CodeViewerComponent {
 		let ts = '';
 
 		if (this.code.includes('// TS')) {
+			// Handle explicit delimiter format
 			const parts = this.code.split('// TS');
 			const htmlPart = parts[0].replace('// HTML', '').trim();
 			ts = parts[1].trim();
 			html = htmlPart;
 		} else {
-			// Fallback if no delimiter found
+			// Extract template from inline template string in TypeScript
 			ts = this.code;
-			html = '<!-- See TS file for implementation -->';
+			
+			// Try multiple patterns to extract template
+			const templatePatterns = [
+				/template:\s*\\?`([\s\S]*?)`/m,  // template: `...` or template: \`...\`
+				/template:\s*`([\s\S]*?)`/m,     // template: `...`
+			];
+
+			let templateMatch: RegExpMatchArray | null = null;
+			for (const pattern of templatePatterns) {
+				templateMatch = this.code.match(pattern);
+				if (templateMatch && templateMatch[1]) {
+					break;
+				}
+			}
+			
+			if (templateMatch && templateMatch[1]) {
+				// Extract the template content, handling escaped characters
+				html = templateMatch[1]
+					.replace(/\\`/g, '`') // Unescape backticks
+					.replace(/\\n/g, '\n') // Unescape newlines
+					.replace(/\\t/g, '\t') // Unescape tabs
+					.trim();
+				
+				// Ensure we have valid HTML
+				if (!html || html.length === 0) {
+					html = '<!-- Empty template -->';
+				}
+			} else {
+				// Fallback: try to find templateUrl or use placeholder
+				const templateUrlMatch = this.code.match(/templateUrl:\s*['"]([^'"]+)['"]/);
+				if (templateUrlMatch) {
+					html = `<!-- Template file: ${templateUrlMatch[1]} -->`;
+				} else {
+					html = '<!-- See TS file for implementation -->';
+				}
+			}
 		}
 		
 		return { html, ts };
 	};
+
+	get selector(): string | undefined {
+		const files = this.parsedFiles();
+		// Try to extract selector from code
+		const match = files.ts.match(/selector:\s*['"]([^'"]+)['"]/);
+		if (match && match[1]) {
+			return match[1];
+		}
+		return undefined;
+	}
 
 	copyCode(): void {
 		navigator.clipboard.writeText(this.code).then(() => {
@@ -219,6 +266,17 @@ export class CodeViewerComponent {
 
 	openStackBlitz(): void {
 		const files = this.parsedFiles();
-		this.stackBlitzService.openProject(this.componentName, files, this.title);
+		let name = this.componentName;
+		const selector = this.selector;
+
+		// If name is default, try to extract from code
+		if (name === 'DemoComponent') {
+			const match = files.ts.match(/export class (\w+)/);
+			if (match && match[1]) {
+				name = match[1];
+			}
+		}
+
+		this.stackBlitzService.openProject(name, files, this.title, 'TanGrid library demo', selector);
 	}
 }

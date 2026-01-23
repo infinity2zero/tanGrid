@@ -34,6 +34,11 @@ export class EmptyStateFeatureComponent {
 	code = `import { Component, TemplateRef } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Item {
+  id: number;
+  name: string;
+}
+
 @Component({
   selector: 'app-items-table',
   standalone: true,
@@ -64,6 +69,9 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class ItemsTableComponent {
-  columns: TanGridColumn<Item>[] = [ /* ... */ ];
+  columns: TanGridColumn<Item>[] = [
+    { header: 'ID', accessorKey: 'id' },
+    { header: 'Name', accessorKey: 'name' },
+  ];
 }`;
 }

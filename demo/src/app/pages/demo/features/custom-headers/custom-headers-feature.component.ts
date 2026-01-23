@@ -60,6 +60,16 @@ export class CustomHeadersFeatureComponent implements AfterViewInit {
 	code = `import { Component, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Report {
+  id: number;
+  title: string;
+  author: string;
+  views: number;
+  downloads: number;
+  rating: number;
+  date: string;
+}
+
 @Component({
   selector: 'app-reports-table',
   standalone: true,
@@ -98,7 +108,13 @@ export class ReportsTableComponent implements AfterViewInit {
   @ViewChild('ratingHeader', { static: true }) ratingHeader!: TemplateRef<any>;
   @ViewChild('actionsHeader', { static: true }) actionsHeader!: TemplateRef<any>;
   
-  reports: Report[] = [ /* ... */ ];
+  reports: Report[] = [
+    { id: 1, title: 'Q4 Sales Report', author: 'John Doe', views: 1250, downloads: 342, rating: 4.5, date: '2024-01-15' },
+    { id: 2, title: 'Marketing Analysis', author: 'Jane Smith', views: 890, downloads: 201, rating: 4.2, date: '2024-01-14' },
+    { id: 3, title: 'Budget Forecast', author: 'Bob Johnson', views: 2100, downloads: 567, rating: 4.8, date: '2024-01-16' },
+    { id: 4, title: 'User Research', author: 'Alice Brown', views: 650, downloads: 123, rating: 4.0, date: '2024-01-17' },
+    { id: 5, title: 'Product Roadmap', author: 'Charlie Wilson', views: 1800, downloads: 445, rating: 4.7, date: '2024-01-15' },
+  ];
   
   columns: TanGridColumn<Report>[] = [];
   
@@ -108,9 +124,15 @@ export class ReportsTableComponent implements AfterViewInit {
       { header: 'ID', accessorKey: 'id' },
       { header: 'Title', accessorKey: 'title' },
       { header: this.viewsHeader, accessorKey: 'views' },
+      { header: 'Downloads', accessorKey: 'downloads' },
       { header: this.ratingHeader, accessorKey: 'rating' },
+      { header: 'Date', accessorKey: 'date' },
       { header: this.actionsHeader, accessorKey: 'id' },
     ];
+  }
+  
+  sortByRating() {
+    console.log('Sorting by rating...');
   }
 }`;
 }

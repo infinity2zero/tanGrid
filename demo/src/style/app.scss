@@ -269,7 +269,7 @@ h6 { font-size: var(--ngs-font-size-base); }
 
 	code {
 		font-family: 'Fira Code', monospace;
-		font-size: 0.9em;
+		font-size: var(--ngs-font-size-sm);
 		padding: 0.2em 0.4em;
 		border-radius: 4px;
 		background: var(--ngs-bg-secondary);
@@ -280,7 +280,7 @@ h6 { font-size: var(--ngs-font-size-base); }
 		margin: var(--ngs-spacing-lg) 0;
 		border-radius: var(--ngs-border-radius);
 		overflow: hidden;
-		background: #1e1e1e;
+		background: var(--ngs-bg-dark);
 		border: 1px solid var(--ngs-border-color);
 
 		pre {
@@ -290,10 +290,10 @@ h6 { font-size: var(--ngs-font-size-base); }
 			
 			code {
 				background: transparent;
-				color: #e0e0e0;
+				color: var(--ngs-text-inverse);
 				padding: 0;
 				border-radius: 0;
-				font-size: 14px;
+				font-size: var(--ngs-font-size-sm);
 			}
 		}
 	}

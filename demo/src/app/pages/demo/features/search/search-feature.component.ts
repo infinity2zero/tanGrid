@@ -46,6 +46,15 @@ export class SearchFeatureComponent {
 	code = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Customer {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  status: string;
+}
+
 @Component({
   selector: 'app-customers-table',
   standalone: true,
@@ -60,12 +69,22 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class CustomersTableComponent {
-  customers: Customer[] = [ /* ... */ ];
+  customers: Customer[] = Array.from({ length: 30 }, (_, i) => ({
+    id: i + 1,
+    name: \`Customer \${String.fromCharCode(65 + (i % 26))}\${i > 25 ? Math.floor(i / 26) : ''}\`,
+    email: \`customer\${i + 1}@example.com\`,
+    phone: \`+1-555-\${String(i + 1000).slice(1)}\`,
+    company: ['Acme Corp', 'Tech Solutions', 'Global Inc', 'Startup Co', 'Enterprise Ltd'][i % 5],
+    status: ['Active', 'Inactive', 'Pending'][i % 3],
+  }));
   
   columns: TanGridColumn<Customer>[] = [
     { header: 'ID', accessorKey: 'id' },
     { header: 'Name', accessorKey: 'name' },
-    // ... more columns
+    { header: 'Email', accessorKey: 'email' },
+    { header: 'Phone', accessorKey: 'phone' },
+    { header: 'Company', accessorKey: 'company' },
+    { header: 'Status', accessorKey: 'status' },
   ];
 }`;
 }

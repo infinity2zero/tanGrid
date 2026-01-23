@@ -60,6 +60,15 @@ export class SelectionFeatureComponent {
 	singleCode = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
 
+interface Task {
+  id: number;
+  title: string;
+  assignee: string;
+  priority: string;
+  status: string;
+  dueDate: string;
+}
+
 @Component({
   selector: 'app-tasks-table',
   standalone: true,
@@ -74,12 +83,21 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class TasksTableComponent {
-  tasks: Task[] = [ /* ... */ ];
+  tasks: Task[] = [
+    { id: 1, title: 'Design homepage', assignee: 'Alice', priority: 'High', status: 'In Progress', dueDate: '2024-01-15' },
+    { id: 2, title: 'Implement API', assignee: 'Bob', priority: 'Medium', status: 'Todo', dueDate: '2024-01-20' },
+    { id: 3, title: 'Write tests', assignee: 'Charlie', priority: 'High', status: 'Done', dueDate: '2024-01-10' },
+    { id: 4, title: 'Code review', assignee: 'Diana', priority: 'Low', status: 'In Progress', dueDate: '2024-01-18' },
+    { id: 5, title: 'Deploy to staging', assignee: 'Eve', priority: 'Medium', status: 'Todo', dueDate: '2024-01-25' },
+  ];
   
   columns: TanGridColumn<Task>[] = [
     { header: 'ID', accessorKey: 'id' },
     { header: 'Title', accessorKey: 'title' },
-    // ... more columns
+    { header: 'Assignee', accessorKey: 'assignee' },
+    { header: 'Priority', accessorKey: 'priority' },
+    { header: 'Status', accessorKey: 'status' },
+    { header: 'Due Date', accessorKey: 'dueDate' },
   ];
 
   onSelectionChange(rows: Task[]) {
@@ -90,6 +108,15 @@ export class TasksTableComponent {
 
 	multipleCode = `import { Component } from '@angular/core';
 import { TanGrid, TanGridColumn } from 'tangrid';
+
+interface Task {
+  id: number;
+  title: string;
+  assignee: string;
+  priority: string;
+  status: string;
+  dueDate: string;
+}
 
 @Component({
   selector: 'app-tasks-table',
@@ -105,12 +132,21 @@ import { TanGrid, TanGridColumn } from 'tangrid';
   \`
 })
 export class TasksTableComponent {
-  tasks: Task[] = [ /* ... */ ];
+  tasks: Task[] = [
+    { id: 1, title: 'Design homepage', assignee: 'Alice', priority: 'High', status: 'In Progress', dueDate: '2024-01-15' },
+    { id: 2, title: 'Implement API', assignee: 'Bob', priority: 'Medium', status: 'Todo', dueDate: '2024-01-20' },
+    { id: 3, title: 'Write tests', assignee: 'Charlie', priority: 'High', status: 'Done', dueDate: '2024-01-10' },
+    { id: 4, title: 'Code review', assignee: 'Diana', priority: 'Low', status: 'In Progress', dueDate: '2024-01-18' },
+    { id: 5, title: 'Deploy to staging', assignee: 'Eve', priority: 'Medium', status: 'Todo', dueDate: '2024-01-25' },
+  ];
   
   columns: TanGridColumn<Task>[] = [
     { header: 'ID', accessorKey: 'id' },
     { header: 'Title', accessorKey: 'title' },
-    // ... more columns
+    { header: 'Assignee', accessorKey: 'assignee' },
+    { header: 'Priority', accessorKey: 'priority' },
+    { header: 'Status', accessorKey: 'status' },
+    { header: 'Due Date', accessorKey: 'dueDate' },
   ];
 
   onSelectionChange(rows: Task[]) {
