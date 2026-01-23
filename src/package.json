@@ -4,12 +4,21 @@
 	"description": "Powerful Angular Table Library powered by TanStack Table",
 	"keywords": [
 		"angular",
-		"components",
-		"ui",
-		"library",
 		"table",
-		"datatable",
-		"tanstack"
+		"datagrid",
+		"tanstack",
+		"tanstack-table",
+		"angular-table",
+		"virtual-scrolling",
+		"pagination",
+		"sorting",
+		"filtering",
+		"component-library",
+		"typescript",
+		"web-components",
+		"ui-library",
+		"enterprise",
+		"material-design"
 	],
 	"author": "infinity2zero",
 	"repository": {
@@ -33,6 +42,5 @@
 		"@popperjs/core": "^2.11.8",
 		"@tanstack/angular-table": "^8.0.0",
 		"rxjs": "^6.5.3 || ^7.4.0"
-	},
-	"schematics": "./schematics/collection.json"
+	}
 }

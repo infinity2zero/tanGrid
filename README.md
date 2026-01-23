@@ -1,4 +1,16 @@
-# tanGrid
+<p align="center">
+  <a href="https://infinity2zero.github.io/tanGrid/">
+    <img src="demo/src/public/images/tanGrid-logo.png" alt="tanGrid Logo" width="250" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://infinity2zero.github.io/tanGrid/">
+    <img src="https://img.shields.io/badge/Docs-Demo-blue?style=for-the-badge&logo=github" alt="Docs & Demo" />
+  </a>
+</p>
+
+# <span style="color:#0B2447">tan</span><span style="color:#20B2AA">Grid</span>
 
 A powerful, feature-rich, and highly customizable data table component for Angular, built on top of the headless UI library [TanStack Table](https://tanstack.com/table/v8).
 
@@ -9,7 +21,7 @@ A powerful, feature-rich, and highly customizable data table component for Angul
 Key design principles:
 - **Headless Core**: Leverages TanStack Table for logic, ensuring robustness and flexibility.
 - **Performance**: Optimized for large datasets with virtual scrolling support via `@tanstack/angular-virtual`.
-- **Developer Experience**: extensive API with typed interfaces and intuitive configuration.
+- **Developer Experience**: Extensive API with typed interfaces and intuitive configuration.
 - **Modern Angular**: Built with Standalone Components and Signals for optimal performance.
 
 ## Key Features
@@ -104,17 +116,9 @@ export class UsersTableComponent {
 | `sorting` | `boolean` | `false` | Enable sorting. |
 | `filtering` | `boolean` | `false` | Enable filtering. |
 
-## Deployment
+## License
 
-### Deploying Demo to GitHub Pages
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-This project is configured for easy deployment to GitHub Pages.
-
-1. **Build and Deploy**:
-   ```bash
-   yarn deploy:demo
-   ```
-   *Note: This command builds the demo app with base-href set to `/tanGrid/`. If your repository name is different, update the `deploy:demo` script in `package.json`.*
-
-2. **Access**:
-   The demo will be available at `https://infinity2zero.github.io/tanGrid/`.
+## Author
+Created by **infinity2zero**.
