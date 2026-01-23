@@ -1,0 +1,40 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Basic Table</h1>
+		<p class="feature-description">
+			The simplest way to display tabular data. Perfect for product listings, user directories, or any structured data display.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Product Inventory</h2>
+		<p class="feature-example__description">
+			A simple product inventory table showing product details without pagination. Ideal for small datasets or when you want to display all items at once.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="products" [columns]="columns" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer 
+				[code]="code" 
+				componentName="ProductTableComponent" 
+				title="Basic Table Demo"
+			></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

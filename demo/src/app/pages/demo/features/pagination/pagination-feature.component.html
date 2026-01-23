@@ -1,0 +1,42 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Pagination</h1>
+		<p class="feature-description">
+			Break large datasets into manageable pages with customizable page sizes. The pagination control shows the current range, total items, and provides navigation controls.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Order Management System</h2>
+		<p class="feature-example__description">
+			A typical e-commerce order management table with 47 orders. Users can navigate through pages and adjust the number of items per page (5, 10, 20, or 50). The pagination shows "X - Y (pageSize) of Total Items" on the left, with page controls and page size selector on the right.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="orders"
+				[columns]="columns"
+				[pageSize]="10"
+				[pageSizeOptions]="[5, 10, 20, 50]"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

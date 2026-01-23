@@ -1,0 +1,78 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Empty State</h1>
+		<p class="feature-description">
+			Display helpful messages or custom content when the table has no data. Perfect for guiding users on what to do next or explaining why the table is empty.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="toggleCode('default')"
+			[attr.aria-expanded]="showCode().default"
+		>
+			@if (showCode().default) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Default Empty State</h2>
+		<p class="feature-example__description">
+			Simple text message displayed when the table is empty. Customize the message to match your application's tone and provide context to users.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="emptyData"
+				[columns]="columns"
+				emptyMessage="No items found. Try adjusting your filters or add a new item."
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().default) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Custom Empty State Template</h2>
+		<p class="feature-example__description">
+			Create a rich, branded empty state with icons, illustrations, call-to-action buttons, or any custom content. Perfect for onboarding flows or guiding users to take action.
+		</p>
+		<div class="feature-example__preview">
+			<ng-template #emptyTemplate>
+				<div style="padding: 3rem; text-align: center;">
+					<div style="font-size: 4rem; margin-bottom: 1rem;"><span class="mdi mdi-inbox-remove-outline"></span></div>
+					<h3 style="margin: 0 0 0.5rem 0; color: var(--ngs-text-primary); font-size: 1.25rem;">
+						No items yet
+					</h3>
+					<p style="margin: 0 0 1.5rem 0; color: var(--ngs-text-secondary);">
+						Get started by adding your first item to the list.
+					</p>
+					<button
+						style="padding: 0.5rem 1.5rem; background: var(--ngs-primary); color: white; border: none; border-radius: var(--ngs-border-radius); cursor: pointer; font-weight: 600;"
+					>
+						Add Item
+					</button>
+				</div>
+			</ng-template>
+
+			<tan-grid
+				[data]="emptyData"
+				[columns]="columns"
+				[emptyTemplate]="emptyTemplate"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().custom) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

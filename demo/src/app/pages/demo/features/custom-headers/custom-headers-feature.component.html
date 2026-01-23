@@ -1,0 +1,63 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Custom Header Templates</h1>
+		<p class="feature-description">
+			Customize column headers with your own templates. Add icons, buttons, tooltips, or any custom content to headers. Perfect for adding interactive elements, help text, or branded styling to table headers.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Report Dashboard with Custom Headers</h2>
+		<p class="feature-example__description">
+			A report management table with custom header templates. Headers include icons, interactive buttons, and custom styling. This demonstrates how to create rich, interactive table headers that go beyond plain text labels. Perfect for dashboards, admin panels, or any application where headers need to be more than just labels.
+		</p>
+		<div class="feature-example__preview">
+			<ng-template #viewsHeader>
+				<div style="display: flex; align-items: center; gap: 0.5rem;">
+					<span class="mdi mdi-eye" style="font-size: 1rem;"></span>
+					<span>Views</span>
+				</div>
+			</ng-template>
+
+			<ng-template #ratingHeader>
+				<div style="display: flex; align-items: center; gap: 0.5rem;">
+					<span class="mdi mdi-star" style="font-size: 1rem;"></span>
+					<span>Rating</span>
+					<button
+						style="padding: 0.25rem 0.5rem; font-size: 0.75rem; background: var(--ngs-primary); color: white; border: none; border-radius: var(--ngs-border-radius); cursor: pointer;"
+						(click)="onSortClick()"
+					>
+						Sort
+					</button>
+				</div>
+			</ng-template>
+
+			<ng-template #actionsHeader>
+				<div style="display: flex; align-items: center; gap: 0.5rem;">
+					<span class="mdi mdi-cog" style="font-size: 1rem;"></span>
+					<span>Actions</span>
+				</div>
+			</ng-template>
+
+			<tan-grid [data]="reports" [columns]="columns" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

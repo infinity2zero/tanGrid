@@ -1,0 +1,697 @@
+<div class="tan-grid__wrapper" [class.tan-grid--theme-material]="theme === 'material'" [class.tan-grid--theme-bootstrap]="theme === 'bootstrap'" [class.tan-grid--theme-ant]="theme === 'ant'" [class.tan-grid--theme-ant-alt]="theme === 'ant-alt'">
+	<!-- Toolbar: Search and Export -->
+	@if (globalSearch || exportable) {
+		<div class="tan-grid__toolbar">
+			@if (globalSearch && showGlobalSearchInput) {
+				<div class="tan-grid__search">
+					<input
+						type="text"
+						class="tan-grid__search-input"
+						[value]="globalFilterSignal()"
+						(input)="onGlobalSearch($any($event.target).value)"
+						placeholder="Search..."
+						aria-label="Search table"
+					/>
+				</div>
+			}
+			@if (exportable) {
+				<div class="tan-grid__export">
+					@if (exportFormats.includes('csv')) {
+						<button
+							type="button"
+							class="tan-grid__export-btn"
+							(click)="exportData({ format: 'csv', filename: 'table-export' })"
+							title="Export to CSV"
+							aria-label="Export to CSV"
+						>
+							<span>📥</span>
+							<span>CSV</span>
+						</button>
+					}
+					@if (exportFormats.includes('excel')) {
+						<button
+							type="button"
+							class="tan-grid__export-btn"
+							(click)="exportData({ format: 'excel', filename: 'table-export' })"
+							title="Export to Excel"
+							aria-label="Export to Excel"
+						>
+							<span>📊</span>
+							<span>Excel</span>
+						</button>
+					}
+					@if (exportFormats.includes('pdf')) {
+						<button
+							type="button"
+							class="tan-grid__export-btn"
+							(click)="exportData({ format: 'pdf', filename: 'table-export' })"
+							title="Export to PDF"
+							aria-label="Export to PDF"
+						>
+							<span>📄</span>
+							<span>PDF</span>
+						</button>
+					}
+				</div>
+			}
+		</div>
+	}
+
+	<!-- Table Container -->
+	<div #tableContainer class="tan-grid__container" [class.tan-grid__container--virtual]="virtualScroll">
+		<!-- Loading Overlay -->
+		@if (loading && loadingType !== 'placeholder') {
+			<div class="tan-grid__loading-overlay">
+				@if (loadingTemplate) {
+					<ng-container *ngTemplateOutlet="loadingTemplate"></ng-container>
+				} @else {
+					<div class="tan-grid__loading-content">
+						<div class="tan-grid__spinner"></div>
+						<p>{{ loadingMessage }}</p>
+					</div>
+				}
+			</div>
+		}
+
+		@if (virtualScroll) {
+				<!-- Virtual Scrolling Table (using divs) -->
+				<div class="tan-grid tan-grid--virtual" [class.tan-grid--striped]="striped" [class.tan-grid--bordered]="bordered" [class.tan-grid--hoverable]="hoverable" [class.tan-grid--compact]="compact" [class.tan-grid--theme-material]="theme === 'material'" [class.tan-grid--theme-bootstrap]="theme === 'bootstrap'" [class.tan-grid--theme-ant]="theme === 'ant'" [class.tan-grid--theme-ant-alt]="theme === 'ant-alt'">
+					<!-- Header -->
+					<div class="tan-grid__head tan-grid__head--virtual">
+						@for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
+							<div
+								class="tan-grid__row tan-grid__row--header"
+								#headerRowContainer
+							>
+								@if (expandable) {
+									<div class="tan-grid__header tan-grid__header--expand tan-grid__header--virtual"></div>
+								}
+								@if (selectionMode !== 'none') {
+									<div class="tan-grid__header tan-grid__header--select tan-grid__header--virtual">
+										@if (selectionMode === 'multiple') {
+											<input
+												type="checkbox"
+												[checked]="table.getIsAllRowsSelected()"
+												[indeterminate]="table.getIsSomeRowsSelected()"
+												(change)="table.toggleAllRowsSelected()"
+												aria-label="Select all rows"
+											/>
+										}
+									</div>
+								}
+								@for (header of headerGroup.headers; track header.id) {
+									<div
+										class="tan-grid__header tan-grid__header--virtual"
+										[class.tan-grid__header--sortable]="header.column.getCanSort()"
+										[class.tan-grid__header--sorted]="header.column.getIsSorted()"
+										[class.tan-grid__header--pinned-left]="isPinnedLeft(header.column.id)"
+										[class.tan-grid__header--pinned-right]="isPinnedRight(header.column.id)"
+										[style.width]="header.getSize() + 'px'"
+										[style.min-width]="header.column.columnDef.minSize + 'px'"
+										[style.max-width]="header.column.columnDef.maxSize + 'px'"
+										[style.left.px]="isPinnedLeft(header.column.id) ? getPinnedLeftOffset(header.column.id) : null"
+										[style.right.px]="isPinnedRight(header.column.id) ? getPinnedRightOffset(header.column.id) : null"
+									>
+										@if (!header.isPlaceholder) {
+											<div class="tan-grid__header-content">
+												<!-- Pin Button -->
+												@if (enablePinning && hasHorizontalScroll() && (canPinLeft(header.column.id) || canPinRight(header.column.id))) {
+													<button
+														type="button"
+														class="tan-grid__pin-btn"
+														[class.active]="isPinnedLeft(header.column.id) || isPinnedRight(header.column.id)"
+														(click)="togglePin(header.column); $event.stopPropagation()"
+														title="Toggle Pin"
+													>
+														<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path></svg>
+													</button>
+												}
+
+												@if (header.column.getCanSort()) {
+													<button
+														type="button"
+														class="tan-grid__sort-button"
+														(click)="header.column.toggleSorting()"
+														[attr.aria-sort]="
+															header.column.getIsSorted() === 'asc'
+																? 'ascending'
+																: header.column.getIsSorted() === 'desc'
+																	? 'descending'
+																	: 'none'
+														"
+													>
+														<span class="tan-grid__header-text">
+															<ng-container
+																*flexRender="
+																	header.column.columnDef.header;
+																	props: header.getContext();
+																	let headerValue
+																"
+															>
+																{{ headerValue }}
+															</ng-container>
+														</span>
+														<span class="tan-grid__sort-icons">
+															<span
+																class="tan-grid__sort-icon tan-grid__sort-icon--up"
+																[class.tan-grid__sort-icon--active]="header.column.getIsSorted() === 'asc'"
+															>
+																↑
+															</span>
+															<span
+																class="tan-grid__sort-icon tan-grid__sort-icon--down"
+																[class.tan-grid__sort-icon--active]="header.column.getIsSorted() === 'desc'"
+															>
+																↓
+															</span>
+														</span>
+													</button>
+												} @else {
+													<span class="tan-grid__header-text">
+														<ng-container
+															*flexRender="
+																header.column.columnDef.header;
+																props: header.getContext();
+																let headerValue
+															"
+														>
+															{{ headerValue }}
+														</ng-container>
+													</span>
+												}
+											</div>
+											@if (header.column.getCanResize()) {
+												<div
+													class="tan-grid__resize-handle"
+													(mousedown)="onResizeStart($event, header)"
+													title="Resize column"
+												></div>
+											}
+										}
+									</div>
+								}
+							</div>
+						}
+						<!-- Filter Row -->
+						@if (filtering && hasFilterableColumns()) {
+							<div class="tan-grid__row tan-grid__row--filter tan-grid__row--virtual">
+								@if (expandable) {
+									<div class="tan-grid__cell tan-grid__cell--filter tan-grid__cell--virtual"></div>
+								}
+								@if (selectionMode !== 'none') {
+									<div class="tan-grid__cell tan-grid__cell--filter tan-grid__cell--virtual"></div>
+								}
+								@for (header of table.getHeaderGroups()[0].headers; track header.id) {
+									<div class="tan-grid__cell tan-grid__cell--filter tan-grid__cell--virtual">
+										@if (header.column.getCanFilter()) {
+											<input
+												type="text"
+												class="tan-grid__filter-input"
+												[value]="header.column.getFilterValue() || ''"
+												(input)="onColumnFilterChange(header.column, $any($event.target).value)"
+												[placeholder]="getFilterPlaceholder(header.column)"
+												aria-label="Filter column"
+											/>
+										}
+									</div>
+								}
+							</div>
+						}
+					</div>
+					<!-- Virtual Scroll Viewport -->
+					@if (loading && loadingType === 'placeholder') {
+						<div class="tan-grid__body tan-grid__body--virtual">
+							@for (row of [].constructor(placeholderRows); track $index) {
+								<div class="tan-grid__row tan-grid__row--placeholder tan-grid__row--virtual">
+									@if (selectionMode !== 'none') {
+										<div class="tan-grid__cell tan-grid__cell--select tan-grid__cell--virtual">
+											<div class="tan-grid__placeholder-checkbox"></div>
+										</div>
+									}
+									@for (col of table.getAllColumns(); track col.id; let i = $index) {
+										<div class="tan-grid__cell tan-grid__cell--virtual">
+											<div class="tan-grid__placeholder-cell" [style.width.%]="getPlaceholderWidth(i)"></div>
+										</div>
+									}
+								</div>
+							}
+						</div>
+					} @else if (table.getRowModel().rows.length === 0) {
+						<div class="tan-grid__body tan-grid__body--virtual">
+							<div class="tan-grid__row tan-grid__row--virtual" [style.width.%]="100">
+								<div class="tan-grid__empty tan-grid__empty--virtual" [style.width.%]="100">
+									@if (emptyTemplate) {
+										<ng-container *ngTemplateOutlet="emptyTemplate"></ng-container>
+									} @else {
+										<div class="tan-grid__empty-content">
+											<p>{{ emptyMessage }}</p>
+										</div>
+									}
+								</div>
+							</div>
+						</div>
+					} @else {
+						<div
+							#virtualScrollViewport
+							[style.height.px]="virtualScrollViewportHeight || 400"
+							class="tan-grid__virtual-viewport"
+							style="overflow-y: auto; contain: strict;"
+						>
+							<div
+								[style.height.px]="virtualizer.getTotalSize()"
+								style="position: relative; width: 100%;"
+							>
+								@for (virtualRow of virtualizer.getVirtualItems(); track virtualRow.index) {
+									<div
+										*ngIf="table.getRowModel().rows[virtualRow.index] as row"
+										class="tan-grid__row tan-grid__row--virtual"
+										[class.tan-grid__row--selected]="isRowSelected(row.id)"
+										[class.tan-grid__row--expanded]="isRowExpanded(row.id)"
+										[style.height.px]="virtualRow.size"
+										[style.transform]="'translateY(' + virtualRow.start + 'px)'"
+										style="position: absolute; top: 0; left: 0; width: 100%;"
+										(click)="onRowClick(row, virtualRow.index)"
+										(dblclick)="onRowDblClick(row, virtualRow.index)"
+									>
+										@if (expandable) {
+											<div class="tan-grid__cell tan-grid__cell--expand tan-grid__cell--virtual">
+												<button
+													type="button"
+													class="tan-grid__expand-button"
+													[class.tan-grid__expand-button--expanded]="isRowExpanded(row.id)"
+													(click)="toggleRowExpansion(row); $event.stopPropagation()"
+													[attr.aria-expanded]="isRowExpanded(row.id)"
+													[attr.aria-label]="isRowExpanded(row.id) ? 'Collapse row' : 'Expand row'"
+												>
+													<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+													</svg>
+												</button>
+											</div>
+										}
+										@if (selectionMode !== 'none') {
+											<div class="tan-grid__cell tan-grid__cell--select tan-grid__cell--virtual">
+												<input
+													type="checkbox"
+													[checked]="row.getIsSelected()"
+													(change)="row.toggleSelected()"
+													(click)="$event.stopPropagation()"
+													[attr.aria-label]="'Select row ' + row.id"
+												/>
+											</div>
+										}
+										@for (cell of row.getVisibleCells(); track cell.id) {
+											<div
+												class="tan-grid__cell tan-grid__cell--virtual"
+												[class.tan-grid__cell--pinned-left]="isPinnedLeft(cell.column.id)"
+												[class.tan-grid__cell--pinned-right]="isPinnedRight(cell.column.id)"
+												[class.tan-grid__cell--editable]="editable && getColumnEditable(cell.column.id)"
+												[class.tan-grid__cell--editing]="isEditing(row.id, cell.column.id)"
+												[style.width]="cell.column.getSize() + 'px'"
+												[style.min-width]="cell.column.columnDef.minSize + 'px'"
+												[style.max-width]="cell.column.columnDef.maxSize + 'px'"
+												[style.left.px]="isPinnedLeft(cell.column.id) ? getPinnedLeftOffset(cell.column.id) : null"
+												[style.right.px]="isPinnedRight(cell.column.id) ? getPinnedRightOffset(cell.column.id) : null"
+												(dblclick)="editable && getColumnEditable(cell.column.id) && startEdit(row, cell.column.id); $event.stopPropagation()"
+											>
+												@if (editable && getColumnEditable(cell.column.id) && isEditing(row.id, cell.column.id)) {
+													<div class="tan-grid__cell-edit">
+														<input
+															[type]="getColumnEditType(cell.column.id)"
+															class="tan-grid__cell-input"
+															[value]="getEditingValue()"
+															(input)="updateEditingValue($any($event.target).value)"
+															(keydown.enter)="saveEdit(row, cell.column.id); $event.stopPropagation()"
+															(keydown.escape)="cancelEdit(); $event.stopPropagation()"
+															(blur)="saveEdit(row, cell.column.id)"
+															(click)="$event.stopPropagation()"
+															autofocus
+														/>
+													</div>
+												} @else {
+													<ng-container
+														*flexRender="
+															cell.column.columnDef.cell;
+															props: cell.getContext();
+															let cellValue
+														"
+													>
+														{{ cellValue }}
+													</ng-container>
+												}
+											</div>
+										}
+									</div>
+								}
+							</div>
+						</div>
+					}
+				</div>
+			} @else {
+				<!-- Regular Table (using table element) -->
+				<table
+					class="tan-grid" [class.tan-grid--theme-material]="theme === 'material'" [class.tan-grid--theme-bootstrap]="theme === 'bootstrap'" [class.tan-grid--theme-ant]="theme === 'ant'" [class.tan-grid--theme-ant-alt]="theme === 'ant-alt'"
+					[class.tan-grid--striped]="striped"
+					[class.tan-grid--bordered]="bordered"
+					[class.tan-grid--hoverable]="hoverable"
+					[class.tan-grid--compact]="compact"
+				>
+				<thead class="tan-grid__head">
+							@for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
+							<tr
+								class="tan-grid__row"
+								#headerRowContainer
+							>
+								@if (expandable) {
+									<th class="tan-grid__header tan-grid__header--expand" scope="col"></th>
+								}
+								@if (selectionMode !== 'none') {
+									<th class="tan-grid__header tan-grid__header--select" scope="col">
+										@if (selectionMode === 'multiple') {
+											<input
+												type="checkbox"
+												[checked]="table.getIsAllRowsSelected()"
+												[indeterminate]="table.getIsSomeRowsSelected()"
+												(change)="table.toggleAllRowsSelected()"
+												aria-label="Select all rows"
+											/>
+										}
+									</th>
+								}
+							@for (header of headerGroup.headers; track header.id) {
+								<th
+									class="tan-grid__header"
+									[class.tan-grid__header--sortable]="header.column.getCanSort()"
+									[class.tan-grid__header--sorted]="header.column.getIsSorted()"
+									[class.tan-grid__header--pinned-left]="isPinnedLeft(header.column.id)"
+									[class.tan-grid__header--pinned-right]="isPinnedRight(header.column.id)"
+									[style.width]="header.getSize() + 'px'"
+									[style.min-width]="header.column.columnDef.minSize + 'px'"
+									[style.max-width]="header.column.columnDef.maxSize + 'px'"
+									[style.left.px]="isPinnedLeft(header.column.id) ? getPinnedLeftOffset(header.column.id) : null"
+									[style.right.px]="isPinnedRight(header.column.id) ? getPinnedRightOffset(header.column.id) : null"
+									scope="col"
+								>
+										@if (!header.isPlaceholder) {
+										<div class="tan-grid__header-content">
+											<!-- Pin Button -->
+											@if (enablePinning && hasHorizontalScroll() && (canPinLeft(header.column.id) || canPinRight(header.column.id))) {
+												<button
+													type="button"
+													class="tan-grid__pin-btn"
+													[class.active]="isPinnedLeft(header.column.id) || isPinnedRight(header.column.id)"
+													(click)="togglePin(header.column); $event.stopPropagation()"
+													title="Toggle Pin"
+												>
+													<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path></svg>
+												</button>
+											}
+
+											@if (header.column.getCanSort()) {
+												<button
+													type="button"
+													class="tan-grid__sort-button"
+													(click)="header.column.toggleSorting()"
+													[attr.aria-sort]="
+														header.column.getIsSorted() === 'asc'
+															? 'ascending'
+															: header.column.getIsSorted() === 'desc'
+																? 'descending'
+																: 'none'
+													"
+												>
+													<span class="tan-grid__header-text">
+														<ng-container
+															*flexRender="
+																header.column.columnDef.header;
+																props: header.getContext();
+																let headerValue
+															"
+														>
+															{{ headerValue }}
+														</ng-container>
+													</span>
+													<span class="tan-grid__sort-icons">
+														<span
+															class="tan-grid__sort-icon tan-grid__sort-icon--up"
+															[class.tan-grid__sort-icon--active]="header.column.getIsSorted() === 'asc'"
+														>
+															↑
+														</span>
+														<span
+															class="tan-grid__sort-icon tan-grid__sort-icon--down"
+															[class.tan-grid__sort-icon--active]="header.column.getIsSorted() === 'desc'"
+														>
+															↓
+														</span>
+													</span>
+												</button>
+											} @else {
+												<span class="tan-grid__header-text">
+													<ng-container
+														*flexRender="
+															header.column.columnDef.header;
+															props: header.getContext();
+															let headerValue
+														"
+													>
+														{{ headerValue }}
+													</ng-container>
+												</span>
+											}
+										</div>
+										@if (header.column.getCanResize()) {
+											<div
+												class="tan-grid__resize-handle"
+												(mousedown)="onResizeStart($event, header)"
+												title="Resize column"
+											></div>
+										}
+									}
+								</th>
+							}
+						</tr>
+					}
+						<!-- Filter Row -->
+						@if (filtering && hasFilterableColumns()) {
+							<tr class="tan-grid__row tan-grid__row--filter">
+								@if (expandable) {
+									<td class="tan-grid__cell tan-grid__cell--filter"></td>
+								}
+								@if (selectionMode !== 'none') {
+									<td class="tan-grid__cell tan-grid__cell--filter"></td>
+								}
+							@for (header of table.getHeaderGroups()[0].headers; track header.id) {
+								<td class="tan-grid__cell tan-grid__cell--filter">
+									@if (header.column.getCanFilter()) {
+										<input
+											type="text"
+											class="tan-grid__filter-input"
+											[value]="header.column.getFilterValue() || ''"
+											(input)="onColumnFilterChange(header.column, $any($event.target).value)"
+											[placeholder]="getFilterPlaceholder(header.column)"
+											aria-label="Filter column"
+										/>
+									}
+								</td>
+							}
+						</tr>
+					}
+				</thead>
+				<tbody class="tan-grid__body">
+					@if (loading && loadingType === 'placeholder') {
+						@for (row of [].constructor(placeholderRows); track $index) {
+							<tr class="tan-grid__row tan-grid__row--placeholder">
+								@if (selectionMode !== 'none') {
+									<td class="tan-grid__cell tan-grid__cell--select">
+										<div class="tan-grid__placeholder-checkbox"></div>
+									</td>
+								}
+								@for (col of table.getAllColumns(); track col.id; let i = $index) {
+									<td class="tan-grid__cell">
+										<div class="tan-grid__placeholder-cell" [style.width.%]="getPlaceholderWidth(i)"></div>
+									</td>
+								}
+							</tr>
+						}
+					} @else if (table.getRowModel().rows.length === 0) {
+						<tr class="tan-grid__row">
+							<td [attr.colspan]="table.getAllColumns().length + (selectionMode !== 'none' ? 1 : 0) + (expandable ? 1 : 0)" class="tan-grid__empty">
+								@if (emptyTemplate) {
+									<ng-container *ngTemplateOutlet="emptyTemplate"></ng-container>
+								} @else {
+									<div class="tan-grid__empty-content">
+										<p>{{ emptyMessage }}</p>
+									</div>
+								}
+							</td>
+						</tr>
+					} @else {
+						@for (row of table.getRowModel().rows; track row.id) {
+							<tr
+								class="tan-grid__row"
+								[class.tan-grid__row--selected]="isRowSelected(row.id)"
+								[class.tan-grid__row--expanded]="isRowExpanded(row.id)"
+								(click)="onRowClick(row, $index)"
+								(dblclick)="onRowDblClick(row, $index)"
+							>
+								@if (expandable) {
+									<td class="tan-grid__cell tan-grid__cell--expand">
+										<button
+											type="button"
+											class="tan-grid__expand-button"
+											[class.tan-grid__expand-button--expanded]="isRowExpanded(row.id)"
+											(click)="toggleRowExpansion(row); $event.stopPropagation()"
+											[attr.aria-expanded]="isRowExpanded(row.id)"
+											[attr.aria-label]="isRowExpanded(row.id) ? 'Collapse row' : 'Expand row'"
+										>
+											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+											</svg>
+										</button>
+									</td>
+								}
+								@if (selectionMode !== 'none') {
+									<td class="tan-grid__cell tan-grid__cell--select">
+										<input
+											type="checkbox"
+											[checked]="row.getIsSelected()"
+											(change)="row.toggleSelected()"
+											(click)="$event.stopPropagation()"
+											[attr.aria-label]="'Select row ' + row.id"
+										/>
+									</td>
+								}
+								@for (cell of row.getVisibleCells(); track cell.id) {
+									<td
+										class="tan-grid__cell"
+										[class.tan-grid__cell--pinned-left]="isPinnedLeft(cell.column.id)"
+										[class.tan-grid__cell--pinned-right]="isPinnedRight(cell.column.id)"
+										[class.tan-grid__cell--editable]="editable && getColumnEditable(cell.column.id)"
+										[class.tan-grid__cell--editing]="isEditing(row.id, cell.column.id)"
+										[style.width]="cell.column.getSize() + 'px'"
+										[style.min-width]="cell.column.columnDef.minSize + 'px'"
+										[style.max-width]="cell.column.columnDef.maxSize + 'px'"
+										[style.left.px]="isPinnedLeft(cell.column.id) ? getPinnedLeftOffset(cell.column.id) : null"
+										[style.right.px]="isPinnedRight(cell.column.id) ? getPinnedRightOffset(cell.column.id) : null"
+										(dblclick)="editable && getColumnEditable(cell.column.id) && startEdit(row, cell.column.id); $event.stopPropagation()"
+									>
+										@if (editable && getColumnEditable(cell.column.id) && isEditing(row.id, cell.column.id)) {
+											<div class="tan-grid__cell-edit">
+												<input
+													[type]="getColumnEditType(cell.column.id)"
+													class="tan-grid__cell-input"
+													[value]="getEditingValue()"
+													(input)="updateEditingValue($any($event.target).value)"
+													(keydown.enter)="saveEdit(row, cell.column.id); $event.stopPropagation()"
+													(keydown.escape)="cancelEdit(); $event.stopPropagation()"
+													(blur)="saveEdit(row, cell.column.id)"
+													(click)="$event.stopPropagation()"
+													autofocus
+												/>
+											</div>
+										} @else {
+											<ng-container
+												*flexRender="
+													cell.column.columnDef.cell;
+													props: cell.getContext();
+													let cellValue
+												"
+											>
+												<!-- FlexRender handles strings, TemplateRefs, and Components automatically -->
+												{{ cellValue }}
+											</ng-container>
+										}
+									</td>
+								}
+							</tr>
+							@if (expandable && isRowExpanded(row.id) && expandedRowTemplate) {
+								<tr class="tan-grid__row tan-grid__row--expanded-content">
+									<td
+										[attr.colspan]="table.getAllColumns().length + (selectionMode !== 'none' ? 1 : 0) + (expandable ? 1 : 0)"
+										class="tan-grid__cell tan-grid__cell--expanded"
+									>
+										<ng-container
+											*ngTemplateOutlet="expandedRowTemplate; context: { $implicit: row.original, row: row.original }"
+										></ng-container>
+									</td>
+								</tr>
+							}
+						}
+					}
+				</tbody>
+			</table>
+			}
+		</div>
+
+		<!-- Pagination -->
+		@if (pagination && !virtualScroll) {
+			<div class="tan-grid__pagination">
+				<div class="tan-grid__pagination-info">
+					<span>
+								{{ getDisplayedRange().start }} - {{ getDisplayedRange().end }} of {{ getTotalItems() }} Items
+					</span>
+				</div>
+				<div class="tan-grid__pagination-controls">
+					@if (table.getPageCount() > 1) {
+						<div class="tan-grid__pagination-pages">
+							<button
+								type="button"
+								class="tan-grid__pagination-btn"
+								[class.tan-grid__pagination-btn--disabled]="!table.getCanPreviousPage()"
+								[disabled]="!table.getCanPreviousPage()"
+								(click)="table.previousPage()"
+								aria-label="Previous page"
+							>
+								<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</button>
+							@for (page of getPaginationPages(); track $index) {
+								@if (page === 'ellipsis') {
+									<span class="tan-grid__pagination-ellipsis">...</span>
+								} @else {
+									<button
+										type="button"
+										class="tan-grid__pagination-btn tan-grid__pagination-btn--page"
+										[class.tan-grid__pagination-btn--active]="page === getCurrentPage()"
+										(click)="goToPage(page)"
+										[attr.aria-label]="'Go to page ' + page"
+										[attr.aria-current]="page === getCurrentPage() ? 'page' : null"
+									>
+										{{ page }}
+									</button>
+								}
+							}
+							<button
+								type="button"
+								class="tan-grid__pagination-btn"
+								[class.tan-grid__pagination-btn--disabled]="!table.getCanNextPage()"
+								[disabled]="!table.getCanNextPage()"
+								(click)="table.nextPage()"
+								aria-label="Next page"
+							>
+								<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</button>
+						</div>
+					}
+					<div class="tan-grid__pagination-size">
+						<select
+							class="tan-grid__page-size-select"
+							[value]="pageSizeSignal()"
+							(change)="onPageSizeChange(+$any($event.target).value)"
+							aria-label="Items per page"
+						>
+							@for (size of pageSizeOptions; track size) {
+								<option [value]="size">{{ size }} / page</option>
+							}
+						</select>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+
+

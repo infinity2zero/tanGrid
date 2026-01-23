@@ -1,0 +1,68 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Row Selection</h1>
+		<p class="feature-description">
+			Enable users to select single or multiple rows with checkboxes. Perfect for task management, bulk operations, or any scenario where users need to select items for actions like delete, archive, or export.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="toggleCode('multiple')"
+			[attr.aria-expanded]="showCode().multiple"
+		>
+			@if (showCode().multiple) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Single Selection</h2>
+		<p class="feature-example__description">
+			Ideal for scenarios where only one item can be selected at a time, such as choosing a default option, selecting a primary record, or picking an item for detailed view.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="tasks"
+				[columns]="columns"
+				selectionMode="single"
+				(selectionChange)="onSelectionChange($event)"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().single) {
+			<ngsd-code-viewer [code]="singleCode"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Multiple Selection</h2>
+		<p class="feature-example__description">
+			Perfect for bulk operations like deleting multiple items, exporting selected records, or applying actions to multiple rows simultaneously. Includes a "select all" checkbox in the header.
+		</p>
+		<div class="feature-example__preview">
+			@if (selectedRows().length > 0) {
+				<div class="demo-info">
+					Selected {{ selectedRows().length }} task(s): {{ getSelectedTitles() }}
+				</div>
+			}
+			<tan-grid
+				[data]="tasks"
+				[columns]="columns"
+				selectionMode="multiple"
+				(selectionChange)="onSelectionChange($event)"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().multiple) {
+			<ngsd-code-viewer [code]="multipleCode"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

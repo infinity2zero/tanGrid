@@ -1,0 +1,51 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Column Visibility</h1>
+		<p class="feature-description">
+			Show or hide columns dynamically based on user preferences or application state. Perfect for customizable views, responsive tables, or when you need to focus on specific data columns.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Employee Directory with Column Toggle</h2>
+		<p class="feature-example__description">
+			An employee management table where users can show or hide columns based on their needs. This is common in admin panels, dashboards, or any application where users need to customize their view. Use checkboxes to toggle column visibility in real-time.
+		</p>
+		<div class="feature-example__preview">
+			<div class="column-controls">
+				<h3 style="margin: 0 0 1rem 0; font-size: 1rem; font-weight: 600;">Toggle Columns:</h3>
+				<div class="column-controls__list">
+					@for (col of allColumns; track col.accessorKey) {
+						<label class="column-controls__item">
+							<input
+								type="checkbox"
+								[checked]="isColumnVisible(col.accessorKey)"
+								(change)="toggleColumn(col.accessorKey)"
+							/>
+							<span>{{ col.header }}</span>
+						</label>
+					}
+				</div>
+			</div>
+			<tan-grid [data]="employees" [columns]="visibleColumns()" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

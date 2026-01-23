@@ -1,0 +1,28 @@
+
+.column-controls {
+	margin-bottom: var(--ngs-spacing-xl);
+	padding: var(--ngs-spacing-lg);
+	background: var(--ngs-bg-secondary);
+	border: 1px solid var(--ngs-border-color);
+	border-radius: var(--ngs-border-radius);
+}
+
+.column-controls__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--ngs-spacing-md);
+}
+
+.column-controls__item {
+	display: flex;
+	align-items: center;
+	gap: var(--ngs-spacing-xs);
+	cursor: pointer;
+	font-size: var(--ngs-font-size-sm);
+	color: var(--ngs-text-primary);
+
+	input[type="checkbox"] {
+		cursor: pointer;
+	}
+}
+

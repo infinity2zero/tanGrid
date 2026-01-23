@@ -1,0 +1,55 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Export Functionality</h1>
+		<p class="feature-description">
+			Export table data to CSV, Excel (XLSX), or PDF formats. Export all data, current page, or selected rows only.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Employee Directory</h2>
+		<p class="feature-example__description">
+			An employee directory table with export functionality. Use the export buttons (CSV, Excel, PDF) in the toolbar above the table to export data. CSV export works out of the box, while Excel and PDF require optional dependencies.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="employees"
+				[columns]="columns"
+				[exportable]="true"
+				[exportFormats]="['csv', 'excel', 'pdf']"
+				[striped]="true"
+				[bordered]="true"
+				[hoverable]="true"
+				[selectionMode]="'multiple'"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-note">
+		<p><strong>Note:</strong> CSV export works without any additional dependencies. For Excel and PDF export, you need to install optional dependencies:</p>
+		<ul>
+			<li><code>npm install xlsx</code> - for Excel (XLSX) export</li>
+			<li><code>npm install jspdf jspdf-autotable</code> - for PDF export</li>
+		</ul>
+		<p>If the libraries are not installed, Excel and PDF exports will automatically fall back to CSV format.</p>
+	</div>
+</div>
+

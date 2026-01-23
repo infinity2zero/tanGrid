@@ -1,0 +1,70 @@
+<div class="feature-page">
+  <div class="feature-header">
+    <h1 class="feature-title">Server-side Data</h1>
+    <p class="feature-description">
+      Handle data operations on the server. This example simulates a backend API with artificial delay.
+      Try sorting, filtering, and navigating pages to see the server requests.
+    </p>
+    <button
+      type="button"
+      class="feature-toggle-code"
+      (click)="showCode.set(!showCode())"
+      [attr.aria-expanded]="showCode()"
+    >
+      @if (showCode()) {
+        <span>Hide Code</span>
+        <span class="mdi mdi-chevron-up"></span>
+      } @else {
+        <span>Show Code</span>
+        <span class="mdi mdi-chevron-down"></span>
+      }
+    </button>
+  </div>
+
+  <div class="feature-example">
+    <div class="feature-example__preview">
+      <div class="controls">
+        <label>
+          <input type="checkbox" [checked]="loading" (change)="loading = !loading"> 
+          Force Loading State
+        </label>
+      </div>
+
+      <ng-template #statusTemplate let-row="row">
+        <span class="badge" [ngClass]="row.status.toLowerCase()">{{ row.status }}</span>
+      </ng-template>
+
+      <tan-grid
+        [data]="data"
+        [columns]="columns"
+        [loading]="loading"
+        [pagination]="true"
+        [paginationMode]="'server'"
+        [totalItems]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20]"
+        [sorting]="true"
+        [sortingMode]="'server'"
+        [filtering]="true"
+        [filteringMode]="'server'"
+        [theme]="tableTheme()"
+        (paginationChange)="onPaginationChange($event)"
+        (sortChange)="onSortChange($event)"
+        (filterChange)="onFilterChange($event)"
+      ></tan-grid>
+
+      <div class="log-panel">
+        <h4>Server Logs (Simulated)</h4>
+        <div class="log-entry" *ngFor="let log of logs">
+          <span class="timestamp">[{{ log.time | date:'HH:mm:ss' }}]</span>
+          <span>{{ log.message }}</span>
+        </div>
+        <div *ngIf="logs.length === 0">No activity yet.</div>
+      </div>
+    </div>
+    
+    @if (showCode()) {
+      <ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+    }
+  </div>
+</div>

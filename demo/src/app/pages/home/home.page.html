@@ -1,0 +1,313 @@
+<div class="page-container">
+
+	<!-- Header / Features -->
+	<div class="hero-section">
+		<div class="hero-content">
+			<img src="images/tanGrid-logo.png" alt="TanGrid Logo" class="hero-logo">
+			<!-- <h2 class="hero-subtitle">Ta<span class="ng-accent">nG</span>rid</h2> -->
+			
+			<p class="hero-description">
+				A powerful, lightweight, and highly customizable Angular data table based on <a href="https://tanstack.com/table/v8" target="_blank" class="text-link">TanStack Table</a> designed for enterprise applications. 
+				Built with performance in mind, offering virtual scrolling, server-side operations, and seamless integration.
+			</p>
+
+			<div class="hero-buttons">
+				<a routerLink="/docs" class="btn btn-primary">Get Started</a>
+				<a routerLink="/demo" class="btn btn-secondary">Demo</a>
+			</div>
+
+			<div class="hero-features-chip">
+				<div class="feature-chip-item">
+					<span class="mdi mdi-server icon-chip"></span>
+					Server-side Pagination
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-filter-variant icon-chip"></span>
+					Advanced Filtering
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-format-list-text icon-chip"></span>
+					Virtual Scrolling
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-pin-outline icon-chip"></span>
+					Column Pinning
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-swap-horizontal icon-chip"></span>
+					Column Reordering
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-resize icon-chip"></span>
+					Column Resizing
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-arrow-expand-vertical icon-chip"></span>
+					Row Expansion
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-checkbox-marked-outline icon-chip"></span>
+					Row Selection
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-palette-outline icon-chip"></span>
+					Custom Themes
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-download icon-chip"></span>
+					Data Export
+				</div>
+				<div class="feature-chip-item">
+					<span class="mdi mdi-magnify icon-chip"></span>
+					Global Search
+				</div>
+			</div>
+		</div>
+		<img src="images/tanGrid-logo.png" alt="Watermark" class="hero-watermark">
+	</div>
+
+	<!-- Toolbar -->
+	<div class="toolbar">
+
+		<!-- Results Count -->
+		<div class="results-count">
+			{{ totalItems() | number }} Results
+		</div>
+
+		<!-- Right Side: Search & Actions -->
+		<div class="toolbar-actions">
+
+			<!-- Search Group -->
+			<div class="search-group">
+				<!-- Search Chip -->
+				<div *ngIf="activeSearchTerm()" class="search-chip">
+					<span>{{ activeSearchTerm() }}</span>
+					<button (click)="clearSearch()" class="chip-close-btn">
+						<span class="mdi mdi-close mdi-18px"></span>
+					</button>
+				</div>
+
+				<div class="search-input-wrapper">
+					<input type="text" placeholder="Search name..." [ngModel]="searchQuery()"
+						(ngModelChange)="searchQuery.set($event)" (keyup.enter)="triggerSearch()" class="search-input">
+					<button (click)="triggerSearch()" class="search-button">
+						<span class="mdi mdi-magnify mdi-18px"></span>
+					</button>
+				</div>
+			</div>
+
+			<div class="divider-vertical"></div>
+
+			<!-- Actions -->
+			<div class="action-buttons">
+				<!-- Column Customizer -->
+				<button [cdkMenuTriggerFor]="columnsMenu" class="icon-button" title="Customize Columns">
+					<span class="mdi mdi-view-column mdi-24px"></span>
+				</button>
+
+				<!-- Export -->
+				<button [cdkMenuTriggerFor]="exportMenu" class="icon-button" title="Export Data">
+					<span class="mdi mdi-download mdi-24px"></span>
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Table -->
+	<div class="table-container">
+		<tan-grid [data]="breweries()" [columns]="columns()" [loading]="loading()" [pagination]="true"
+			[paginationMode]="'server'" [totalItems]="totalItems()" [pageSize]="pageSize()"
+			[pageSizeOptions]="pageSizeOptions" [sortingMode]="'server'" [showGlobalSearchInput]="false"
+			[expandable]="true" [expandedRowTemplate]="expandedRowTemplate" [pinnedLeft]="pinnedLeft()"
+			[pinnedRight]="pinnedRight()" [enablePinning]="true" [emptyTemplate]="emptyTemplate"
+			(paginationChange)="onPaginationChange($event)" (sortChange)="onSortChange($event)"
+			(pinChange)="onPinChange($event)">
+		</tan-grid>
+	</div>
+
+	<!-- Cross Browser Support -->
+	<div class="browser-support-section">
+		<h3 class="browser-section-title">Cross Browser Support</h3>
+		<p class="browser-section-subtitle">TanGrid supports all major browsers</p>
+		
+		<div class="browser-icons">
+			<a href="https://www.google.com/chrome/" target="_blank" class="browser-link" title="Google Chrome">
+				<span class="mdi mdi-google-chrome" style="font-size: 40px; color: #4285F4;"></span>
+				<span>Chrome</span>
+			</a>
+			<a href="https://www.mozilla.org/firefox/" target="_blank" class="browser-link" title="Mozilla Firefox">
+				<span class="mdi mdi-firefox" style="font-size: 40px; color: #FF7139;"></span>
+				<span>Firefox</span>
+			</a>
+			<a href="https://www.apple.com/safari/" target="_blank" class="browser-link" title="Apple Safari">
+				<span class="mdi mdi-apple-safari" style="font-size: 40px; color: #006CFF;"></span>
+				<span>Safari</span>
+			</a>
+			<a href="https://www.microsoft.com/edge" target="_blank" class="browser-link" title="Microsoft Edge">
+				<span class="mdi mdi-microsoft-edge" style="font-size: 40px; color: #0078D7;"></span>
+				<span>Edge</span>
+			</a>
+			<a href="https://www.opera.com/" target="_blank" class="browser-link" title="Opera">
+				<span class="mdi mdi-opera" style="font-size: 40px; color: #FF1B2D;"></span>
+				<span>Opera</span>
+			</a>
+		</div>
+		
+		<p class="browser-section-description">
+			TanGrid is fully compatible with all modern browsers including Chrome, Firefox, Safari, Edge, and Opera.
+		</p>
+	</div>
+
+</div>
+
+<!-- Expanded Row Template -->
+<ng-template #expandedRowTemplate let-row>
+	<div class="expanded-row-content">
+		<div class="expanded-section">
+			<div class="expanded-header-group">
+				<div class="expanded-icon-box">
+					<span class="mdi mdi-chevron-down" style="font-size: 20px;"></span>
+				</div>
+				<div>
+					<h3 class="expanded-title">{{ row.name }}</h3>
+					<span class="brewery-type-badge">
+						{{ row.brewery_type | titlecase }}
+					</span>
+				</div>
+			</div>
+			<div class="id-text">
+				ID: {{ row.id }}
+			</div>
+		</div>
+
+		<div class="expanded-section">
+			<h4 class="section-title">
+				<span class="mdi mdi-map-marker-outline section-icon" style="font-size: 16px;"></span>
+				Location Details
+			</h4>
+			<div class="details-list">
+				<div class="text-dark">{{ row.street || row.address_1 }}</div>
+				<div>{{ row.city }}, {{ row.state_province }} {{ row.postal_code }}</div>
+				<div>{{ row.country }}</div>
+				<div *ngIf="row.latitude && row.longitude" class="map-container">
+					<a [href]="'https://www.google.com/maps/search/?api=1&query=' + row.latitude + ',' + row.longitude"
+						target="_blank" class="map-link">
+						<span class="mdi mdi-map-search-outline" style="font-size: 14px;"></span>
+						View on Map
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="expanded-section">
+			<h4 class="section-title">
+				<span class="mdi mdi-card-account-details-outline section-icon" style="font-size: 16px;"></span>
+				Contact Info
+			</h4>
+			<div class="details-list spaced">
+				<div *ngIf="row.phone" class="contact-row">
+					<span class="label-gray">Phone:</span>
+					<a [href]="'tel:' + row.phone" class="link-contact">{{ row.phone }}</a>
+				</div>
+				<div *ngIf="row.website_url" class="contact-row start">
+					<span class="label-gray">Web:</span>
+					<a [href]="row.website_url" target="_blank" class="link-contact break-all">{{ row.website_url }}</a>
+				</div>
+				<div *ngIf="!row.phone && !row.website_url" class="no-contact">
+					No contact information available
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-template>
+
+<!-- Columns Menu -->
+<ng-template #columnsMenu>
+	<div class="popover-card columns-menu" cdkMenu (click)="$event.stopPropagation()">
+
+		<!-- Header -->
+		<div class="popover-header">
+			<h3 class="popover-title">Customize Columns</h3>
+		</div>
+
+		<!-- Top Part: Default and Visible (Side by Side) -->
+		<div class="columns-split-container">
+
+			<!-- Default Columns (Left) -->
+			<div class="columns-left-panel">
+				<h4 class="panel-header gray">
+					Fixed Columns
+				</h4>
+				<div class="panel-content custom-scrollbar">
+					<div *ngFor="let col of defaultColumnsList()" class="column-item fixed">
+						<span class="mdi mdi-pin-outline icon-gray" style="font-size: 14px;"></span>
+						<span class="truncate font-medium">{{ col.header }}</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Visible Columns (Right) -->
+			<div class="columns-right-panel">
+				<h4 class="panel-header blue">
+					Visible
+					<span class="count-badge blue">{{ visibleColumnsList().length }}</span>
+				</h4>
+				<div class="panel-content custom-scrollbar">
+					<div *ngFor="let col of visibleColumnsList()" class="column-item visible"
+						(click)="toggleColumn(col.id!)" title="Click to hide">
+						<span class="truncate font-medium">{{ col.header }}</span>
+						<span class="mdi mdi-close" style="font-size: 14px;"></span>
+					</div>
+					<div *ngIf="visibleColumnsList().length === 0" class="empty-state">
+						<span>No optional columns visible</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bottom Part: Available -->
+		<div class="columns-bottom-panel">
+			<h4 class="panel-header available">
+				Available to Add
+				<span class="count-badge gray">{{ availableColumnsList().length }}</span>
+			</h4>
+			<div class="panel-content custom-scrollbar">
+				<div class="available-grid">
+					<div *ngFor="let col of availableColumnsList()" class="column-item available"
+						(click)="toggleColumn(col.id!)" title="Click to show">
+						<span class="mdi mdi-plus icon-green" style="font-size: 14px;"></span>
+						<span class="truncate font-medium">{{ col.header }}</span>
+					</div>
+				</div>
+				<div *ngIf="availableColumnsList().length === 0" class="empty-state">
+					<span class="mdi mdi-check-all icon-empty" style="font-size: 24px;"></span>
+					<span>All columns are currently visible</span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</ng-template>
+
+
+
+<!-- Export Menu -->
+<ng-template #exportMenu>
+	<div class="popover-card export-menu" cdkMenu>
+		<div class="export-header">Export Data</div>
+
+		<button class="export-btn" (click)="triggerExport('csv')">
+			<span class="mdi mdi-file-delimited mdi-18px text-green-600"></span>
+			Export as CSV
+		</button>
+	</div>
+</ng-template>
+
+<ng-template #emptyTemplate>
+	<div class="empty-state-container">
+		<span class="mdi mdi-alert-circle-outline mdi-48px icon-empty-large"></span>
+		<p class="empty-state-text">No breweries found</p>
+		<p class="empty-state-subtext">Try adjusting your search or filters</p>
+	</div>
+</ng-template>

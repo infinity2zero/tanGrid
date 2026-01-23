@@ -1,0 +1,12 @@
+
+.filter-badge {
+	display: inline-block;
+	padding: var(--ngs-spacing-xs) var(--ngs-spacing-sm);
+	margin-left: var(--ngs-spacing-xs);
+	background: var(--ngs-primary-light);
+	color: var(--ngs-primary-dark);
+	border-radius: var(--ngs-border-radius);
+	font-size: var(--ngs-font-size-xs);
+	font-weight: var(--ngs-font-weight-medium);
+}
+

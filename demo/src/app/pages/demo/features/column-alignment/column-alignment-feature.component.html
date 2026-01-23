@@ -1,0 +1,36 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Column Alignment</h1>
+		<p class="feature-description">
+			Control text alignment within columns. Left-align text columns for readability, right-align numeric columns for easy comparison, or center-align for balanced visual presentation.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Financial Ledger</h2>
+		<p class="feature-example__description">
+			A financial ledger table demonstrating proper column alignment. Text columns (ID, Account) are left-aligned for readability, while numeric columns (Debit, Credit, Balance) are right-aligned to make it easier to compare values and perform mental calculations. This is a standard practice in accounting and financial applications.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="financials" [columns]="columns" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

@@ -1,0 +1,49 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Row Events</h1>
+		<p class="feature-description">
+			Handle user interactions with table rows through click and double-click events. Perfect for opening detail views, marking items as read, or triggering any action based on row interaction.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="toggleCode('click')"
+			[attr.aria-expanded]="showCode().click"
+		>
+			@if (showCode().click) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Notification Center</h2>
+		<p class="feature-example__description">
+			A notification center table where clicking a row marks it as read or shows a preview, and double-clicking opens the full notification details. This pattern is common in email clients, task managers, and notification systems.
+		</p>
+		<div class="feature-example__preview">
+			@if (lastEvent()) {
+				<div class="demo-info">
+					{{ lastEvent() }}
+				</div>
+			}
+			<tan-grid
+				[data]="notifications"
+				[columns]="columns"
+				(rowClick)="onRowClick($event)"
+				(rowDblClick)="onRowDblClick($event)"
+				[hoverable]="true"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().click) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

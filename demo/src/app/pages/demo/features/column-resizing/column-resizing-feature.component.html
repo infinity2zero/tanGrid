@@ -1,0 +1,39 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Column Resizing</h1>
+		<p class="feature-description">
+			Allow users to resize columns by dragging the column borders. Perfect for tables with varying content lengths where users need to adjust column widths to optimize their view.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Product Catalog with Resizable Columns</h2>
+		<p class="feature-example__description">
+			A product management table where users can drag column borders to resize them. This is essential for data-heavy tables where users need to see more or less of specific columns. Hover over column borders and drag to resize. Perfect for spreadsheets, data grids, or any table where column width flexibility is important.
+		</p>
+		<div class="feature-example__preview">
+			<div class="demo-info">
+				<span class="mdi mdi-lightbulb-on-outline"></span> <strong>Tip:</strong> Hover over the column borders and drag to resize. All columns in this example are resizable.
+			</div>
+			<tan-grid [data]="products" [columns]="columns" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

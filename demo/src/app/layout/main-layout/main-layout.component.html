@@ -1,0 +1,75 @@
+<div class="main-layout">
+	<!-- Mobile Toggle -->
+	<!-- Backdrop -->
+	@if (mobileSidebarOpen()) {
+		<div 
+			class="sidebar-backdrop" 
+			(click)="closeMobileSidebar()"
+			role="button"
+			aria-label="Close sidebar"
+			tabindex="0"
+			(keydown.enter)="closeMobileSidebar()"
+			(keydown.space)="closeMobileSidebar()"
+		></div>
+	}
+
+	<aside class="sidebar" [class.sidebar--collapsed]="sidebarCollapsed()" [class.sidebar--mobile-open]="mobileSidebarOpen()">
+		<div class="sidebar__header">
+			<h2 class="sidebar__title">{{ sidebarTitle() }}</h2>
+			<button
+				type="button"
+				class="sidebar__toggle"
+				(click)="toggleSidebar()"
+				[attr.aria-label]="sidebarCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+			>
+				@if (sidebarCollapsed()) {
+					<span class="mdi mdi-chevron-right"></span>
+				} @else {
+					<span class="mdi mdi-chevron-left"></span>
+				}
+			</button>
+		</div>
+		
+		@if (!sidebarCollapsed()) {
+			<div class="sidebar__search">
+				<span class="sidebar__search-icon mdi mdi-magnify"></span>
+				<input 
+					type="text" 
+					[ngModel]="searchText()" 
+					(ngModelChange)="searchText.set($event)" 
+					[placeholder]="searchPlaceholder()"
+					class="sidebar__search-input"
+				>
+			</div>
+		}
+
+		<nav class="sidebar__nav">
+			@for (group of filteredNavGroups(); track group.title) {
+				@if (!sidebarCollapsed() && group.title) {
+					<div class="sidebar__group-title">{{ group.title }}</div>
+				}
+				@for (item of group.items; track item.path) {
+					<a
+						[routerLink]="[currentBaseRoute(), item.path]"
+						routerLinkActive="sidebar__nav-item--active"
+						class="sidebar__nav-item"
+						[attr.aria-current]="item.path"
+					>
+						@if (item.icon) {
+							<span class="sidebar__nav-icon mdi" [class]="item.icon"></span>
+						}
+						<span class="sidebar__nav-label">{{ item.label }}</span>
+					</a>
+				}
+			}
+			@if (filteredNavGroups().length === 0) {
+				<div class="sidebar__empty">
+					No items found
+				</div>
+			}
+		</nav>
+	</aside>
+	<main class="main-content">
+		<router-outlet></router-outlet>
+	</main>
+</div>

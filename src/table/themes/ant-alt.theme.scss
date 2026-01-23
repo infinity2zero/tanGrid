@@ -1,0 +1,171 @@
+// Ant Design Alt Theme (Row borders only)
+// CSS variables cascade from the theme class to all children
+
+.tan-grid__wrapper.tan-grid--theme-ant-alt {
+	// CSS Variables
+	--ngs-border-radius: 0;
+	--ngs-border-radius-sm: 0;
+	--ngs-border-radius-lg: 0;
+	--ngs-primary: #1890ff;
+	--ngs-primary-hover: #40a9ff;
+	--ngs-primary-active: #096dd9;
+	--ngs-primary-light: #e6f7ff;
+	--ngs-primary-dark: #0050b3;
+	--ngs-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+	--ngs-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	--ngs-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+	--ngs-spacing-xs: 0.125rem;
+	--ngs-spacing-sm: 0.25rem;
+	--ngs-spacing-md: 0.5rem;
+	--ngs-spacing-lg: 0.75rem;
+	--ngs-spacing-xl: 1rem;
+	--ngs-spacing-2xl: 1.5rem;
+	--ngs-spacing-3xl: 2rem;
+	--ngs-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--ngs-font-size-base: 0.875rem;
+
+	.tan-grid {
+		border: 1px solid #f0f0f0;
+		border-radius: 0;
+
+		&--bordered {
+			border: 1px solid #f0f0f0;
+
+			.tan-grid__cell,
+			.tan-grid__header {
+				border: none;
+				border-bottom: 1px solid #f0f0f0;
+			}
+		}
+
+		&--striped .tan-grid__body .tan-grid__row:nth-child(even) {
+			background-color: #fafafa;
+		}
+
+		&--hoverable .tan-grid__body .tan-grid__row:hover {
+			background-color: #f5f5f5;
+		}
+	}
+
+	.tan-grid__head {
+		background-color: #fafafa;
+	}
+
+	.tan-grid__header {
+		padding: var(--ngs-spacing-md) var(--ngs-spacing-lg);
+		font-weight: var(--ngs-font-weight-medium);
+		color: rgba(0, 0, 0, 0.85);
+		background-color: #fafafa;
+		border-bottom: 1px solid #f0f0f0;
+
+		&--sortable:hover {
+			background-color: #e6f7ff;
+		}
+
+		&--sorted {
+			background-color: #e6f7ff;
+			color: var(--ngs-primary);
+		}
+	}
+
+	.tan-grid__cell {
+		padding: var(--ngs-spacing-md) var(--ngs-spacing-lg);
+		color: rgba(0, 0, 0, 0.85);
+		border-bottom: 1px solid #f0f0f0;
+	}
+
+	.tan-grid__row:last-child .tan-grid__cell {
+		border-bottom: none;
+	}
+
+	.tan-grid__search-input,
+	.tan-grid__filter-input {
+		border-radius: 0;
+		border: 1px solid #d9d9d9;
+		transition: all 0.3s ease;
+
+		&:hover {
+			border-color: #40a9ff;
+		}
+
+		&:focus {
+			border-color: var(--ngs-primary);
+			box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+		}
+	}
+
+	.tan-grid__export-btn {
+		border-radius: 0;
+		border: 1px solid #d9d9d9;
+		transition: all 0.3s ease;
+
+		&:hover {
+			border-color: var(--ngs-primary);
+			color: var(--ngs-primary);
+		}
+
+		&:active {
+			background-color: var(--ngs-primary);
+			color: var(--ngs-text-inverse);
+		}
+	}
+
+	.tan-grid__pagination-btn {
+		border-radius: 0;
+		border: 1px solid #d9d9d9;
+		transition: all 0.3s ease;
+		min-width: 32px;
+		height: 32px;
+
+		&:hover {
+			border-color: var(--ngs-primary);
+			color: var(--ngs-primary);
+		}
+
+		&--active {
+			background-color: var(--ngs-primary);
+			color: var(--ngs-text-inverse);
+			border-color: var(--ngs-primary);
+		}
+	}
+
+	.tan-grid__checkbox {
+		border-radius: 0;
+	}
+}
+
+.tan-grid.tan-grid--theme-ant-alt {
+	--ngs-border-radius: 0;
+	--ngs-border-radius-sm: 0;
+	--ngs-border-radius-lg: 0;
+	--ngs-primary: #1890ff;
+	--ngs-primary-hover: #40a9ff;
+	--ngs-primary-active: #096dd9;
+	--ngs-primary-light: #e6f7ff;
+	--ngs-primary-dark: #0050b3;
+	--ngs-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+	--ngs-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	--ngs-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+	--ngs-spacing-xs: 0.125rem;
+	--ngs-spacing-sm: 0.25rem;
+	--ngs-spacing-md: 0.5rem;
+	--ngs-spacing-lg: 0.75rem;
+	--ngs-spacing-xl: 1rem;
+	--ngs-spacing-2xl: 1.5rem;
+	--ngs-spacing-3xl: 2rem;
+	--ngs-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--ngs-font-size-base: 0.875rem;
+
+	border: 1px solid #f0f0f0;
+	border-radius: 0;
+
+	&--bordered {
+		border: 1px solid #f0f0f0;
+
+		.tan-grid__cell,
+		.tan-grid__header {
+			border: none;
+			border-bottom: 1px solid #f0f0f0;
+		}
+	}
+}

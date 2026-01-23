@@ -1,0 +1,60 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Sorting</h1>
+		<p class="feature-description">
+			Enable sorting on any column with client-side or server-side sorting. Click column headers to sort ascending, click again for descending, and once more to clear sorting.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="toggleCode('client')"
+			[attr.aria-expanded]="showCode().client"
+		>
+			@if (showCode().client) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Client-Side Sorting</h2>
+		<p class="feature-example__description">
+			Perfect for small to medium datasets where all data is loaded upfront. Sorting happens instantly in the browser without server requests. Ideal for employee directories, product catalogs, or any dataset under 10,000 rows.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="employees" [columns]="clientColumns" sortingMode="client" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode().client) {
+			<ngsd-code-viewer [code]="clientCode"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Server-Side Sorting</h2>
+		<p class="feature-example__description">
+			For large datasets or when data needs to be sorted on the server. Clicking a column header triggers a sort event that you can handle to make API calls. This is essential for databases with millions of records or when sorting requires complex business logic.
+		</p>
+		<div class="feature-example__preview">
+			@if (serverSortInfo(); as sortInfo) {
+				<div class="demo-info">
+					Last sort: Column "{{ sortInfo.columnId }}" - {{ sortInfo.direction.toUpperCase() }}
+				</div>
+			}
+			<tan-grid
+				[data]="employees"
+				[columns]="serverColumns"
+				sortingMode="server"
+				(sortChange)="onServerSort($event)"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().server) {
+			<ngsd-code-viewer [code]="serverCode"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

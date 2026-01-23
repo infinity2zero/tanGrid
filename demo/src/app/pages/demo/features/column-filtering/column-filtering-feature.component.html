@@ -1,0 +1,51 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Per-Column Filtering</h1>
+		<p class="feature-description">
+			Enable individual column filters to allow users to filter data by specific columns. Supports both default text filtering and custom filter functions for advanced filtering logic like numeric ranges, date ranges, or complex conditions.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Order Management with Column Filters</h2>
+		<p class="feature-example__description">
+			An order management table with per-column filtering. Each filterable column has its own filter input. The "Amount" column uses a custom filter function to show orders greater than or equal to the entered value. This is different from global search - it allows users to filter by specific columns independently, which is essential for complex data analysis.
+		</p>
+		<div class="feature-example__preview">
+			@if (activeFilters().length > 0) {
+				<div class="demo-info">
+					<strong>Active Filters:</strong>
+					@for (filter of activeFilters(); track filter.columnId) {
+						<span class="filter-badge">{{ filter.columnId }}: {{ filter.value }}</span>
+					}
+				</div>
+			}
+			<tan-grid
+				[data]="orders"
+				[columns]="columns"
+				[filtering]="true"
+				(filterChange)="onFilterChange($event)"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

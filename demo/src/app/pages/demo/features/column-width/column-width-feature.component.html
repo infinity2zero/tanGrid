@@ -1,0 +1,36 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Column Width</h1>
+		<p class="feature-description">
+			Control column widths with fixed widths, minimum widths, and maximum widths. Perfect for ensuring consistent layouts, preventing text overflow, or creating responsive table designs.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Document Management</h2>
+		<p class="feature-example__description">
+			A document library table with controlled column widths. The ID column is narrow (60px), the title column has a fixed width with a minimum to prevent squishing, and the type column has a maximum width to keep it compact. This ensures a clean, organized layout regardless of content length.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="documents" [columns]="columns" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

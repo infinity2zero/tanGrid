@@ -1,0 +1,45 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Inline Editing</h1>
+		<p class="feature-description">
+			Edit cell values directly in the table. Double-click any editable cell to start editing. Press Enter to save or Escape to cancel.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Product Inventory Management</h2>
+		<p class="feature-example__description">
+			A product inventory table with inline editing. Double-click on editable cells (Name, Category, Price, Stock, Email) to edit them. The Price and Stock columns have validation to ensure valid numeric values.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="products"
+				[columns]="columns"
+				[editable]="true"
+				[striped]="true"
+				[bordered]="true"
+				[hoverable]="true"
+				(cellEditChange)="onCellEdit($event)"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

@@ -1,0 +1,60 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Custom Cell Rendering</h1>
+		<p class="feature-description">
+			Customize how cells are rendered using Angular templates. Perfect for displaying formatted values, badges, icons, buttons, or any custom UI elements within table cells.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: E-commerce Product Table</h2>
+		<p class="feature-example__description">
+			A product catalog table with custom cell renderers for price formatting, stock status with color coding, and star ratings. This demonstrates how to create rich, interactive table cells that go beyond plain text.
+		</p>
+		<div class="feature-example__preview">
+			<ng-template #imageCell let-product="row">
+				<span [class]="product.image" style="font-size: 1.5rem;"></span>
+			</ng-template>
+
+			<ng-template #priceCell let-product="row">
+				<span style="font-weight: 600; color: var(--ngs-primary);">${{ product.price.toFixed(2) }}</span>
+			</ng-template>
+
+			<ng-template #stockCell let-product="row">
+				<span
+					[style.color]="product.stock > 20 ? 'var(--ngs-success)' : 'var(--ngs-warning)'"
+					[style.font-weight]="'600'"
+				>
+					{{ product.stock }} units
+				</span>
+			</ng-template>
+
+			<ng-template #ratingCell let-product="row">
+				<div style="display: flex; align-items: center; gap: 4px;">
+					<span class="mdi mdi-star" style="color: #FFD700;"></span>
+					<span style="font-weight: 600;">{{ product.rating }}</span>
+				</div>
+			</ng-template>
+
+			<tan-grid [data]="products" [columns]="columns" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

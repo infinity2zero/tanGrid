@@ -1,0 +1,197 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Table Themes</h1>
+		<p class="feature-description">
+			Choose from multiple built-in themes: Material Design, Bootstrap, Ant Design, or keep the default styling. Each theme provides a distinct visual style while maintaining all table functionality.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Theme Selector</h2>
+		<p class="feature-example__description">
+			Use the buttons below to switch between different themes and see how the table appearance changes.
+		</p>
+
+		<div class="theme-selector">
+			<button
+				type="button"
+				class="theme-btn"
+				[class.theme-btn--active]="selectedTheme() === 'default'"
+				(click)="setTheme('default')"
+			>
+				Default
+			</button>
+			<button
+				type="button"
+				class="theme-btn"
+				[class.theme-btn--active]="selectedTheme() === 'material'"
+				(click)="setTheme('material')"
+			>
+				Material Design
+			</button>
+			<button
+				type="button"
+				class="theme-btn"
+				[class.theme-btn--active]="selectedTheme() === 'bootstrap'"
+				(click)="setTheme('bootstrap')"
+			>
+				Bootstrap
+			</button>
+			<button
+				type="button"
+				class="theme-btn"
+				[class.theme-btn--active]="selectedTheme() === 'ant'"
+				(click)="setTheme('ant')"
+			>
+				Ant Design
+			</button>
+			<button
+				type="button"
+				class="theme-btn"
+				[class.theme-btn--active]="selectedTheme() === 'ant-alt'"
+				(click)="setTheme('ant-alt')"
+			>
+				Ant Design Alt
+			</button>
+		</div>
+
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="products"
+				[columns]="columns"
+				[theme]="selectedTheme()"
+				[striped]="true"
+				[bordered]="true"
+				[hoverable]="true"
+				[sorting]="true"
+				[pagination]="true"
+				[pageSize]="5"
+			></tan-grid>
+			<p class="theme-note">
+				<strong>Note:</strong> The theme selected in the navbar dropdown above applies to all tables in the demo. Use the buttons below to preview different themes on this specific table.
+			</p>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-info">
+		<h3 class="feature-info__title">Theme Characteristics</h3>
+		<div class="theme-grid">
+			<div class="theme-card">
+				<h4>Default</h4>
+				<p>Current styling with sharp edges, clean borders, and professional appearance.</p>
+			</div>
+			<div class="theme-card">
+				<h4>Material Design</h4>
+				<p>Rounded corners (4px), elevation shadows, 8dp grid system, and Material Design colors.</p>
+			</div>
+			<div class="theme-card">
+				<h4>Bootstrap</h4>
+				<p>Bootstrap 5 styling with rounded corners (6px), standard spacing, and Bootstrap colors.</p>
+			</div>
+			<div class="theme-card">
+				<h4>Ant Design</h4>
+				<p>Sharp edges (0px), high contrast, compact spacing, and Ant Design color scheme.</p>
+			</div>
+			<div class="theme-card">
+				<h4>Ant Design Alt</h4>
+				<p>Same as Ant Design but with row borders only (no column borders).</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="feature-info">
+		<h3 class="feature-info__title">Global Setup</h3>
+		<p>
+			To use the table with its default themes and variables, make sure to import the core styles in your global styles (e.g., <code>styles.scss</code>):
+		</p>
+		<pre><code>// Import library variables and core styles
+&#64;import 'tangrid/styles/variables';
+
+// If you are using a pre-built theme, you might need to import it as well
+// &#64;import 'tangrid/styles/themes/default';</code></pre>
+
+		<h3 class="feature-info__title">Overriding Themes</h3>
+		<p>
+			You can override any theme by targeting the theme class in your global styles or component styles (using <code>::ng-deep</code> if needed).
+			The themes use CSS variables which makes them easy to customize.
+		</p>
+		<pre><code>.tan-grid--theme-material {{ '{' }}
+  --ngs-primary: #ff4081; /* Change primary color */
+  --ngs-border-radius: 8px; /* Change border radius */
+{{ '}' }}</code></pre>
+
+		<h4 class="feature-info__subtitle">Available CSS Variables</h4>
+		<p>The following CSS variables are available for customization:</p>
+		
+		<div class="variable-list">
+			<h5>Colors</h5>
+			<ul>
+				<li><code>--ngs-primary</code>: Primary brand color (used for active states, links, focus rings)</li>
+				<li><code>--ngs-primary-hover</code>: Hover state for primary actions</li>
+				<li><code>--ngs-primary-active</code>: Active state for primary actions</li>
+				<li><code>--ngs-primary-light</code>: Light shade of primary color (backgrounds)</li>
+				
+				<li><code>--ngs-secondary</code>: Secondary color (neutral actions)</li>
+				
+				<li><code>--ngs-text-primary</code>: Main text color</li>
+				<li><code>--ngs-text-secondary</code>: Secondary text color (headers, hints)</li>
+				<li><code>--ngs-text-muted</code>: Muted text color (disabled states)</li>
+				<li><code>--ngs-text-inverse</code>: Inverse text color (text on primary background)</li>
+				
+				<li><code>--ngs-bg-primary</code>: Primary background color (table body)</li>
+				<li><code>--ngs-bg-secondary</code>: Secondary background color (headers, striped rows)</li>
+				<li><code>--ngs-bg-tertiary</code>: Tertiary background color (hover states)</li>
+				
+				<li><code>--ngs-border-color</code>: Main border color</li>
+			</ul>
+
+			<h5>Typography</h5>
+			<ul>
+				<li><code>--ngs-font-family</code>: Font family for the table</li>
+				<li><code>--ngs-font-size-base</code>: Base font size (14px default)</li>
+				<li><code>--ngs-font-size-sm</code>: Small font size (13px default)</li>
+			</ul>
+
+			<h5>Layout & Spacing</h5>
+			<ul>
+				<li><code>--ngs-border-radius</code>: Border radius for container and inputs</li>
+				<li><code>--ngs-spacing-xs</code>: Extra small spacing (2px)</li>
+				<li><code>--ngs-spacing-sm</code>: Small spacing (4px)</li>
+				<li><code>--ngs-spacing-md</code>: Medium spacing (8px)</li>
+				<li><code>--ngs-spacing-lg</code>: Large spacing (12px)</li>
+			</ul>
+		</div>
+
+		<h4 class="feature-info__subtitle">Creating a Custom Theme</h4>
+		<p>
+			To create a completely new theme, you can define a class that sets these variables and pass it to the <code>theme</code> input.
+			Note that for custom themes not in the predefined list, you might need to handle the class application manually or extend the types.
+		</p>
+		<pre><code>/* global-styles.scss */
+.tan-grid--theme-cyberpunk {{ '{' }}
+  --ngs-primary: #0ff;
+  --ngs-bg-primary: #000;
+  --ngs-text-primary: #0f0;
+  --ngs-border-radius: 0;
+  --ngs-font-family: 'Courier New', monospace;
+{{ '}' }}</code></pre>
+	</div>
+</div>
+

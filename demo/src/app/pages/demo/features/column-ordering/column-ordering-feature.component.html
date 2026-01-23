@@ -1,0 +1,67 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Column Ordering</h1>
+		<p class="feature-description">
+			Reorder columns by dragging the table headers. This is useful when different users prefer different column arrangements for the same dataset, such as prioritizing name, status, or dates depending on their workflow.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Interactive Demo: Drag Headers To Reorder Columns</h2>
+		<p class="feature-example__description">
+			Drag and drop the table headers to change the column order. The current order is shown below the table so you can see exactly how the layout changes as you drag. This pattern is ideal for user-configurable dashboards and data grids.
+		</p>
+		<div class="feature-example__preview">
+			<div class="demo-info">
+				<span class="mdi mdi-lightbulb-on-outline"></span> <strong>Tip:</strong> Click and drag any column header to a new position. The table updates instantly, and the current column order is displayed below.
+			</div>
+			<tan-grid
+				[data]="users"
+				[columns]="columns"
+				[reorderable]="true"
+				[pagination]="false"
+				[sorting]="true"
+				[filtering]="true"
+				[bordered]="true"
+				[hoverable]="true"
+				[theme]="tableTheme()"
+				(columnOrderChange)="onColumnOrderChange($event)"
+			></tan-grid>
+			<div class="column-ordering-info">
+				<h3>Current Column Order</h3>
+				<p class="column-ordering-info__hint">
+					Order is based on column IDs. This is what you can persist in your application to restore a user's preferred layout.
+				</p>
+				<div class="column-ordering-info__list">
+					@for (id of columnOrder(); track id) {
+						<span class="column-ordering-info__item">
+							{{ getColumnLabel(id) }}
+						</span>
+					} @empty {
+						<span class="column-ordering-info__empty">
+							Drag a column header to see the current column order here.
+						</span>
+					}
+				</div>
+			</div>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

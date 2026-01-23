@@ -1,0 +1,175 @@
+// tanGrid Design Tokens
+// CSS Custom Properties for theming
+
+:root,
+[data-ngs-theme="light"] {
+	// Colors - Primary
+	--ngs-primary: #007bff;
+	--ngs-primary-hover: #0056b3;
+	--ngs-primary-active: #004085;
+	--ngs-primary-light: #cfe2ff;
+	--ngs-primary-dark: #004085;
+
+	// Colors - Secondary
+	--ngs-secondary: #6c757d;
+	--ngs-secondary-hover: #5a6268;
+	--ngs-secondary-active: #484f54;
+	--ngs-secondary-light: #e2e3e5;
+	--ngs-secondary-dark: #383d41;
+
+	// Colors - Success
+	--ngs-success: #28a745;
+	--ngs-success-hover: #218838;
+	--ngs-success-active: #1e7e34;
+	--ngs-success-light: #d4edda;
+	--ngs-success-dark: #155724;
+
+	// Colors - Danger
+	--ngs-danger: #dc3545;
+	--ngs-danger-hover: #c82333;
+	--ngs-danger-active: #bd2130;
+	--ngs-danger-light: #f8d7da;
+	--ngs-danger-dark: #721c24;
+
+	// Colors - Warning
+	--ngs-warning: #ffc107;
+	--ngs-warning-hover: #e0a800;
+	--ngs-warning-active: #d39e00;
+	--ngs-warning-light: #fff3cd;
+	--ngs-warning-dark: #856404;
+
+	// Colors - Info
+	--ngs-info: #17a2b8;
+	--ngs-info-hover: #138496;
+	--ngs-info-active: #117a8b;
+	--ngs-info-light: #d1ecf1;
+	--ngs-info-dark: #0c5460;
+
+	// Text Colors
+	--ngs-text-primary: #212529;
+	--ngs-text-secondary: #6c757d;
+	--ngs-text-muted: #868e96;
+	--ngs-text-inverse: #ffffff;
+
+	// Background Colors
+	--ngs-bg-primary: #ffffff;
+	--ngs-bg-secondary: #f8f9fa;
+	--ngs-bg-tertiary: #e9ecef;
+	--ngs-bg-dark: #212529;
+
+	// Border Colors
+	--ngs-border-color: #dee2e6;
+	--ngs-border-color-light: #e9ecef;
+	--ngs-border-color-dark: #adb5bd;
+
+	// Border Radius (Sharp edges by default, like ng-zorro)
+	--ngs-border-radius: 0;
+	--ngs-border-radius-sm: 0;
+	--ngs-border-radius-lg: 0;
+	--ngs-border-radius-xl: 0;
+	--ngs-border-radius-pill: 50rem; // Keep for special cases like pills
+	--ngs-border-radius-circle: 50%; // Keep for circular elements
+
+	// Spacing (Compact design)
+	--ngs-spacing-xs: 0.125rem; // 2px
+	--ngs-spacing-sm: 0.25rem; // 4px
+	--ngs-spacing-md: 0.5rem; // 8px
+	--ngs-spacing-lg: 0.75rem; // 12px
+	--ngs-spacing-xl: 1rem; // 16px
+	--ngs-spacing-2xl: 1.5rem; // 24px
+	--ngs-spacing-3xl: 2rem; // 32px
+
+	// Typography (Compact design)
+	--ngs-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	--ngs-font-size-xs: 0.75rem; // 12px
+	--ngs-font-size-sm: 0.8125rem; // 13px
+	--ngs-font-size-base: 0.875rem; // 14px
+	--ngs-font-size-lg: 1rem; // 16px
+	--ngs-font-size-xl: 1.125rem; // 18px
+	--ngs-font-size-2xl: 1.25rem; // 20px
+	--ngs-font-size-3xl: 1.5rem; // 24px
+	--ngs-font-size-4xl: 2rem; // 32px
+
+	--ngs-font-weight-light: 300;
+	--ngs-font-weight-normal: 400;
+	--ngs-font-weight-medium: 500;
+	--ngs-font-weight-semibold: 600;
+	--ngs-font-weight-bold: 700;
+
+	--ngs-line-height-tight: 1.25;
+	--ngs-line-height-normal: 1.5;
+	--ngs-line-height-relaxed: 1.75;
+
+	// Shadows
+	--ngs-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+	--ngs-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	--ngs-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+
+	// Transitions
+	--ngs-transition-base: all 0.2s ease-in-out;
+	--ngs-transition-fast: all 0.15s ease-in-out;
+	--ngs-transition-slow: all 0.3s ease-in-out;
+
+	// Z-index
+	--ngs-z-index-dropdown: 1000;
+	--ngs-z-index-sticky: 1020;
+	--ngs-z-index-fixed: 1030;
+	--ngs-z-index-modal-backdrop: 1040;
+	--ngs-z-index-modal: 1050;
+	--ngs-z-index-popover: 1060;
+	--ngs-z-index-tooltip: 1070;
+}
+
+// Dark Theme
+[data-ngs-theme="dark"] {
+	--ngs-primary: #0d6efd;
+	--ngs-primary-hover: #0b5ed7;
+	--ngs-primary-active: #0a58ca;
+	--ngs-primary-light: #031633;
+	--ngs-primary-dark: #0a58ca;
+
+	--ngs-secondary: #6c757d;
+	--ngs-secondary-hover: #5c636a;
+	--ngs-secondary-active: #565e64;
+	--ngs-secondary-light: #41464b;
+	--ngs-secondary-dark: #adb5bd;
+
+	--ngs-success: #198754;
+	--ngs-success-hover: #157347;
+	--ngs-success-active: #146c43;
+	--ngs-success-light: #0f5132;
+	--ngs-success-dark: #75b798;
+
+	--ngs-danger: #dc3545;
+	--ngs-danger-hover: #bb2d3b;
+	--ngs-danger-active: #b02a37;
+	--ngs-danger-light: #842029;
+	--ngs-danger-dark: #ea868f;
+
+	--ngs-warning: #ffc107;
+	--ngs-warning-hover: #ffca2c;
+	--ngs-warning-active: #ffcd39;
+	--ngs-warning-light: #664d03;
+	--ngs-warning-dark: #ffcd39;
+
+	--ngs-info: #0dcaf0;
+	--ngs-info-hover: #31d2f2;
+	--ngs-info-active: #3dd5f3;
+	--ngs-info-light: #055160;
+	--ngs-info-dark: #6edff6;
+
+	--ngs-text-primary: #ffffff;
+	--ngs-text-secondary: #adb5bd;
+	--ngs-text-muted: #868e96;
+	--ngs-text-inverse: #212529;
+
+	--ngs-bg-primary: #212529;
+	--ngs-bg-secondary: #343a40;
+	--ngs-bg-tertiary: #495057;
+	--ngs-bg-dark: #121416;
+
+	--ngs-border-color: #495057;
+	--ngs-border-color-light: #343a40;
+	--ngs-border-color-dark: #6c757d;
+}
+

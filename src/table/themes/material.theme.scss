@@ -1,0 +1,172 @@
+// Material Design Theme
+// CSS variables cascade from the theme class to all children
+
+.tan-grid__wrapper.tan-grid--theme-material {
+	// CSS Variables - these cascade to all children
+	--ngs-border-radius: 0.25rem;
+	--ngs-border-radius-sm: 0.125rem;
+	--ngs-border-radius-lg: 0.375rem;
+	--ngs-primary: #6200ee;
+	--ngs-primary-hover: #3700b3;
+	--ngs-primary-active: #000000;
+	--ngs-primary-light: #e0d4f7;
+	--ngs-primary-dark: #3700b3;
+	--ngs-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	--ngs-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	--ngs-shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	--ngs-spacing-xs: 0.25rem;
+	--ngs-spacing-sm: 0.5rem;
+	--ngs-spacing-md: 0.75rem;
+	--ngs-spacing-lg: 1rem;
+	--ngs-spacing-xl: 1.5rem;
+	--ngs-spacing-2xl: 2rem;
+	--ngs-spacing-3xl: 3rem;
+	--ngs-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--ngs-font-size-base: 0.875rem;
+	--ngs-font-weight-medium: 500;
+
+	// Wrapper styles
+	box-shadow: var(--ngs-shadow-sm);
+	border-radius: var(--ngs-border-radius);
+	overflow: hidden;
+	background-color: var(--ngs-bg-primary);
+
+	// Table styles
+	.tan-grid {
+		border: none;
+		border-radius: var(--ngs-border-radius);
+
+		&--bordered {
+			border: none;
+
+			.tan-grid__cell,
+			.tan-grid__header {
+				border: none;
+				border-bottom: 1px solid var(--ngs-border-color-light);
+			}
+		}
+
+		&--striped .tan-grid__body .tan-grid__row:nth-child(even) {
+			background-color: rgba(0, 0, 0, 0.02);
+		}
+
+		&--hoverable .tan-grid__body .tan-grid__row:hover {
+			background-color: rgba(0, 0, 0, 0.04);
+		}
+	}
+
+	// Head styles
+	.tan-grid__head {
+		background-color: var(--ngs-bg-primary);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+	}
+
+	// Header styles
+	.tan-grid__header {
+		padding: var(--ngs-spacing-md) var(--ngs-spacing-lg);
+		font-weight: var(--ngs-font-weight-medium);
+		color: rgba(0, 0, 0, 0.87);
+		letter-spacing: 0.01785714em;
+
+		&--sortable:hover {
+			background-color: rgba(0, 0, 0, 0.04);
+		}
+
+		&--sorted {
+			background-color: rgba(98, 0, 238, 0.08);
+			color: var(--ngs-primary);
+		}
+	}
+
+	// Cell styles
+	.tan-grid__cell {
+		padding: var(--ngs-spacing-md) var(--ngs-spacing-lg);
+		color: rgba(0, 0, 0, 0.87);
+	}
+
+	// Input styles
+	.tan-grid__search-input,
+	.tan-grid__filter-input {
+		border-radius: var(--ngs-border-radius);
+		border: 1px solid var(--ngs-border-color);
+		transition: all 0.2s ease-in-out;
+
+		&:focus {
+			border-color: var(--ngs-primary);
+			box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.2);
+		}
+	}
+
+	// Button styles
+	.tan-grid__export-btn {
+		border-radius: var(--ngs-border-radius);
+		text-transform: uppercase;
+		font-weight: var(--ngs-font-weight-medium);
+		letter-spacing: 0.0892857143em;
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			box-shadow: var(--ngs-shadow-sm);
+		}
+	}
+
+	// Pagination styles
+	.tan-grid__pagination-btn {
+		border-radius: 50%;
+		min-width: 40px;
+		height: 40px;
+		transition: all 0.2s ease-in-out;
+
+		&:hover:not(.tan-grid__pagination-btn--active) {
+			background-color: rgba(0, 0, 0, 0.04);
+		}
+
+		&--active {
+			background-color: var(--ngs-primary);
+			color: var(--ngs-text-inverse);
+		}
+	}
+
+	// Checkbox styles
+	.tan-grid__checkbox {
+		border-radius: 2px;
+	}
+}
+
+// Also apply when theme class is directly on table element
+.tan-grid.tan-grid--theme-material {
+	--ngs-border-radius: 0.25rem;
+	--ngs-border-radius-sm: 0.125rem;
+	--ngs-border-radius-lg: 0.375rem;
+	--ngs-primary: #6200ee;
+	--ngs-primary-hover: #3700b3;
+	--ngs-primary-active: #000000;
+	--ngs-primary-light: #e0d4f7;
+	--ngs-primary-dark: #3700b3;
+	--ngs-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	--ngs-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	--ngs-shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	--ngs-spacing-xs: 0.25rem;
+	--ngs-spacing-sm: 0.5rem;
+	--ngs-spacing-md: 0.75rem;
+	--ngs-spacing-lg: 1rem;
+	--ngs-spacing-xl: 1.5rem;
+	--ngs-spacing-2xl: 2rem;
+	--ngs-spacing-3xl: 3rem;
+	--ngs-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--ngs-font-size-base: 0.875rem;
+	--ngs-font-weight-medium: 500;
+
+	border: none;
+	border-radius: var(--ngs-border-radius);
+
+	&--bordered {
+		border: none;
+
+		.tan-grid__cell,
+		.tan-grid__header {
+			border: none;
+			border-bottom: 1px solid var(--ngs-border-color-light);
+		}
+	}
+}

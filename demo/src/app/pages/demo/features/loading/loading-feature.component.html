@@ -1,0 +1,93 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Loading States</h1>
+		<p class="feature-description">
+			Provide visual feedback while data is being loaded. Choose from spinner, placeholder (skeleton) loading, or a custom template to match your application's design language.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="toggleCode('spinner')"
+			[attr.aria-expanded]="showCode().spinner"
+		>
+			@if (showCode().spinner) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Spinner Loader</h2>
+		<p class="feature-example__description">
+			Classic spinner with loading message. Simple and effective for quick data loads. Best for fast API responses or when you want a minimal loading indicator.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="[]"
+				[columns]="columns"
+				[loading]="loading()"
+				loadingType="spinner"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().spinner) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Placeholder (Skeleton) Loader</h2>
+		<p class="feature-example__description">
+			Facebook-style skeleton loading that mimics the table structure. Provides better perceived performance and reduces layout shift. Perfect for slower network connections or when loading takes more than a second.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="[]"
+				[columns]="columns"
+				[loading]="loading()"
+				loadingType="placeholder"
+				[placeholderRows]="5"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().placeholder) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Custom Template Loader</h2>
+		<p class="feature-example__description">
+			Use your own custom loading template for complete control over the loading experience. Perfect for branded loading animations, progress bars, or any custom loading UI.
+		</p>
+		<div class="feature-example__preview">
+			<ng-template #customLoader>
+				<div style="padding: 2rem; text-align: center; color: var(--ngs-text-secondary);">
+					<div style="font-size: 2rem; margin-bottom: 0.5rem;"><span class="mdi mdi-timer-sand"></span></div>
+					<p style="margin: 0; font-weight: 600;">Loading your data...</p>
+					<p style="margin: 0.5rem 0 0 0; font-size: 0.875rem;">Please wait</p>
+				</div>
+			</ng-template>
+
+			<tan-grid
+				[data]="[]"
+				[columns]="columns"
+				[loading]="loading()"
+				loadingType="template"
+				[loadingTemplate]="customLoader"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode().custom) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

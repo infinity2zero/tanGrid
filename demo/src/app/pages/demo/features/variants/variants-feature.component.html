@@ -1,0 +1,93 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Table Variants</h1>
+		<p class="feature-description">
+			Customize the appearance of your table with built-in variants: striped rows, borders, hover effects, and compact spacing. Mix and match these options to create the perfect table style for your application.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="toggleCode('striped')"
+			[attr.aria-expanded]="showCode().striped"
+		>
+			@if (showCode().striped) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Striped Table</h2>
+		<p class="feature-example__description">
+			Alternating row colors make it easier to scan across rows, especially in wide tables. Perfect for financial data, transaction lists, or any dense tabular information.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="transactions" [columns]="columns" [striped]="true" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode().striped) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Bordered Table</h2>
+		<p class="feature-example__description">
+			Clear borders around cells help define data boundaries. Ideal for forms, data entry tables, or when you need strong visual separation between cells.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="transactions" [columns]="columns" [bordered]="true" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode().bordered) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Hoverable Table</h2>
+		<p class="feature-example__description">
+			Rows highlight on hover to provide visual feedback and improve interactivity. Essential for clickable rows or when users need to identify which row they're interacting with.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="transactions" [columns]="columns" [hoverable]="true" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode().hoverable) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Compact Table</h2>
+		<p class="feature-example__description">
+			Reduced padding and font size for displaying more data in less space. Perfect for dashboards, reports, or when screen real estate is limited.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid [data]="transactions" [columns]="columns" [compact]="true" [pagination]="false" [theme]="tableTheme()"></tan-grid>
+		</div>
+		@if (showCode().compact) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Combined Variants</h2>
+		<p class="feature-example__description">
+			Combine multiple variants for a polished, professional look. This example shows striped, bordered, and hoverable styles working together.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="transactions"
+				[columns]="columns"
+				[striped]="true"
+				[bordered]="true"
+				[hoverable]="true"
+				[pagination]="false"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+	</div>
+</div>
+

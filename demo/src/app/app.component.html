@@ -1,0 +1,49 @@
+<header class="navbar">
+	<a class="navbar-brand" routerLink="/">
+		<img src="images/tGlogoV1.png" alt="i2z" height="45" style="display: block;">
+		<!-- <span class="brand-text">tanGrid</span> -->
+	</a>
+
+	<nav class="navbar-nav">
+		<a routerLink="/docs" routerLinkActive="active" class="nav-link">Documentation</a>
+		<a routerLink="/demo" routerLinkActive="active" class="nav-link">Examples</a>
+		<!-- Github Link -->
+		<a href="https://github.com/infinity2zero/tanGrid" target="_blank" class="nav-icon-link" title="GitHub">
+			<span class="mdi mdi-github"></span>
+		</a>
+	</nav>
+
+	<div class="navbar-actions">
+		@if (showThemeSelector()) {
+			<select 
+				class="table-theme-select"
+				[value]="tableTheme()"
+				(change)="onTableThemeChange($event)"
+				[attr.aria-label]="'Select table theme'"
+			>
+				@for (tableThemeOption of tableThemes; track tableThemeOption.value) {
+					<option [value]="tableThemeOption.value">{{ tableThemeOption.label }}</option>
+				}
+			</select>
+		}
+		<button (click)="toggleTheme()" class="theme-toggle" [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'">
+			<span class="mdi" [class.mdi-white-balance-sunny]="theme() === 'dark'" [class.mdi-weather-night]="theme() !== 'dark'"></span>
+		</button>
+	</div>
+</header>
+
+<div class="app-content">
+	<router-outlet></router-outlet>
+</div>
+
+<footer class="footer">
+	<div class="container">
+		<p>
+			Designed and built by <strong>infinity2zero</strong> with Angular and pure SCSS.
+		</p>
+		<p>
+			Code licensed under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT</a>.
+		</p>
+	</div>
+</footer>
+

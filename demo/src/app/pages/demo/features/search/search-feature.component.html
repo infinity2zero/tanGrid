@@ -1,0 +1,42 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Global Search</h1>
+		<p class="feature-description">
+			Enable users to search across all columns simultaneously with a single search input. Perfect for customer directories, product catalogs, or any dataset where users need to quickly find specific records.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Real-World Example: Customer Directory</h2>
+		<p class="feature-example__description">
+			A customer management table with 30 customers. Users can search by name, email, phone, company, or status. The search filters results in real-time as you type, making it easy to find specific customers in large datasets.
+		</p>
+		<div class="feature-example__preview">
+			<tan-grid
+				[data]="customers"
+				[columns]="columns"
+				[globalSearch]="true"
+				[pageSize]="10"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+

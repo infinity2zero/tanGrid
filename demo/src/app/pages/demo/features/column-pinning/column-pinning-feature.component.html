@@ -1,0 +1,84 @@
+<div class="feature-page">
+	<div class="feature-header">
+		<h1 class="feature-title">Column Pinning (Sticky Columns)</h1>
+		<p class="feature-description">
+			Pin columns to the left or right side of the table to keep them visible while scrolling horizontally. This is especially useful for tables with many columns where you want to keep important columns (like ID, name, or status) always visible. Perfect for wide tables, comparison views, and data analysis scenarios.
+		</p>
+		<button
+			type="button"
+			class="feature-toggle-code"
+			(click)="showCode.set(!showCode())"
+			[attr.aria-expanded]="showCode()"
+		>
+			@if (showCode()) {
+				<span>Hide Code</span>
+				<span class="mdi mdi-chevron-up"></span>
+			} @else {
+				<span>Show Code</span>
+				<span class="mdi mdi-chevron-down"></span>
+			}
+		</button>
+	</div>
+
+	<div class="feature-example">
+		<h2 class="feature-example__title">Interactive Demo: Pin/Unpin Columns</h2>
+		<p class="feature-example__description">
+			Use the controls below to pin or unpin columns. Pinned columns stay visible while scrolling horizontally. Try pinning different columns and scroll to see the effect. A column can be pinned to either left or right, but not both.
+		</p>
+		<div class="feature-example__preview">
+			<div class="pinning-controls">
+				<div class="pinning-controls__section">
+					<h3>Pin to Left</h3>
+					<div class="pinning-controls__checkboxes">
+						@for (col of columns; track col.accessorKey) {
+							<label class="pinning-control">
+								<input
+									type="checkbox"
+									[checked]="isPinnedLeft(getColumnKey(col))"
+									[disabled]="isPinnedRight(getColumnKey(col))"
+									(change)="togglePinLeft(getColumnKey(col))"
+								/>
+								<span>{{ col.header }}</span>
+							</label>
+						}
+					</div>
+				</div>
+				<div class="pinning-controls__section">
+					<h3>Pin to Right</h3>
+					<div class="pinning-controls__checkboxes">
+						@for (col of columns; track col.accessorKey) {
+							<label class="pinning-control">
+								<input
+									type="checkbox"
+									[checked]="isPinnedRight(getColumnKey(col))"
+									[disabled]="isPinnedLeft(getColumnKey(col))"
+									(change)="togglePinRight(getColumnKey(col))"
+								/>
+								<span>{{ col.header }}</span>
+							</label>
+						}
+					</div>
+				</div>
+			</div>
+			<div class="demo-info">
+				<span class="mdi mdi-lightbulb-on-outline"></span> <strong>Tip:</strong> Scroll horizontally to see how pinned columns stay fixed. Try pinning different columns using the controls above.
+			</div>
+			<tan-grid
+				[data]="products"
+				[columns]="columns"
+				[pinnedLeft]="pinnedLeft()"
+				[pinnedRight]="pinnedRight()"
+				[pagination]="true"
+				[pageSize]="10"
+				[sorting]="true"
+				[bordered]="true"
+				[hoverable]="true"
+				[theme]="tableTheme()"
+			></tan-grid>
+		</div>
+		@if (showCode()) {
+			<ngsd-code-viewer [code]="code"></ngsd-code-viewer>
+		}
+	</div>
+</div>
+
