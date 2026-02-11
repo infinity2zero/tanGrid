@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import sdk, { Project } from '@stackblitz/sdk';
+
+/** Project config shape for StackBlitz (avoids pulling in full SDK) */
+export interface StackBlitzProjectConfig {
+	title: string;
+	description: string;
+	template: 'angular-cli' | 'create-react-app' | 'javascript' | 'node' | 'typescript' | 'vue' | 'html' | 'polymer';
+	files: Record<string, string>;
+	dependencies: Record<string, string>;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -16,7 +24,7 @@ export class StackBlitzService {
 		title: string = 'TanGrid Demo',
 		description: string = 'TanGrid library demo',
 		componentSelector?: string
-	): Project {
+	): StackBlitzProjectConfig {
 		// Validate inputs
 		if (!componentName || !files || !files.ts) {
 			throw new Error('Invalid component name or files provided');
@@ -109,14 +117,15 @@ body { font-family: Roboto, "Helvetica Neue", sans-serif; }`;
 		};
 	}
 
-	openProject(
+	async openProject(
 		componentName: string,
 		files: { html: string; ts: string; css?: string },
 		title: string = 'TanGrid Demo',
 		description: string = 'TanGrid library demo',
 		componentSelector?: string
-	) {
+	): Promise<void> {
 		const project = this.getProjectConfig(componentName, files, title, description, componentSelector);
+		const { default: sdk } = await import('@stackblitz/sdk');
 		sdk.openProject(project, { openFile: `src/app/${this.toKebabCase(componentName)}.component.ts` });
 	}
 

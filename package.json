@@ -42,7 +42,7 @@
 		"tangrid:test": "ng test -c other-browsers --watch=false && ng test -c zone-other-browsers --watch=false && ng test -c zone --watch=false && ng test tangrid --coverage --watch=false",
 		"tangrid:tdd": "ng test tangrid",
 		"tangrid:e2e": "playwright test -c e2e-app",
-		"tangrid:build": "ng build tangrid -c production && cp README.md dist/tangrid/ && cp LICENSE dist/tangrid/ && find dist/tangrid -name '*.map' -delete",
+		"tangrid:build": "ng build tangrid -c production && node scripts/build-themes.js && node scripts/slim-package.js && cp README.md dist/tangrid/ && cp LICENSE dist/tangrid/ && find dist/tangrid -name '*.map' -delete",
 		"tangrid:watch": "ng build tangrid -c development --watch",
 		"demo:serve": "ng serve demo",
 		"demo:lint": "ng lint demo",

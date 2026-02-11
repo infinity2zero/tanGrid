@@ -882,11 +882,8 @@
 	}
 }
 
-// Import theme files at the end to ensure they can override base styles
-@import './themes/material.theme';
-@import './themes/bootstrap.theme';
-@import './themes/ant.theme';
-@import './themes/ant-alt.theme';
+// Theme CSS is optional - import from tangrid/styles/themes/*.css when using theme="material" etc.
+// See README for usage.
 
 // Pinning Button & Menu Styles
 .tan-grid__pin-btn {

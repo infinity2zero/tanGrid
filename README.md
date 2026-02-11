@@ -102,6 +102,26 @@ export class UsersTableComponent {
 }
 ```
 
+## Theming
+
+The default theme is included with the component. For Material, Bootstrap, Ant, or Ant-alt themes, add the optional theme CSS to your global styles:
+
+**angular.json:**
+```json
+"styles": [
+  "node_modules/tangrid/styles/themes/material.css",
+  "node_modules/tangrid/styles/themes/bootstrap.css"
+]
+```
+
+**Or in `styles.scss`:**
+```scss
+@import 'tangrid/styles/themes/material.css';
+@import 'tangrid/styles/themes/bootstrap.css';
+```
+
+Use the `[theme]` input to switch: `theme="default"` | `theme="material"` | `theme="bootstrap"` | `theme="ant"` | `theme="ant-alt"`.
+
 ## API Reference
 
 ### `<tan-grid>` Component

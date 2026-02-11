@@ -4,11 +4,13 @@ import {
 	Component,
 	EventEmitter,
 	Input,
+	Injector,
 	NgZone,
 	OnChanges,
 	OnInit,
 	Output,
 	SimpleChanges,
+	effect,
 	signal,
 	TemplateRef,
 	ViewEncapsulation,
@@ -16,12 +18,10 @@ import {
 	ViewChild,
 	ElementRef,
 	OnDestroy,
+	runInInjectionContext,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 	import { FormsModule } from '@angular/forms';
-	// Use local provider to fix AfterRenderCallback error in @tanstack/angular-virtual
-	import { injectVirtualizer } from './virtual-provider';
-	import Sortable from 'sortablejs';
 import {
 	createAngularTable,
 	FlexRenderDirective,
@@ -394,31 +394,47 @@ export class TanGrid<T = any> implements OnInit, OnChanges, AfterViewInit, OnDes
 	}
 
 	private _headerRowContainer!: ElementRef<HTMLElement>;
-	private _sortable: Sortable | null = null;
+	private _sortable: any = null;
 
 	@ViewChild('headerRowContainer')
 	set headerRowContainer(el: ElementRef<HTMLElement>) {
 		this._headerRowContainer = el;
-		this._initSortable();
+		void this._initSortable();
 	}
 	get headerRowContainer() {
 		return this._headerRowContainer;
 	}
 
 	/**
-	 * Virtualizer for row rendering
+	 * Virtualizer for row rendering (lazy-loaded when virtualScroll=true to save ~20KB)
 	 */
-	readonly virtualizer = injectVirtualizer(() => ({
-		count: this.table ? this.table.getRowModel().rows.length : 0,
-		scrollElement: this.scrollElementSignal() || undefined,
-		estimateSize: () => this.rowHeight,
-		overscan: this.virtualScrollBufferSize,
-	}));
+	protected virtualizerRef = signal<any>(null);
+
+	get virtualizer() {
+		return this.virtualizerRef();
+	}
 
 	constructor(
 		private ngZone: NgZone,
 		private cdr: ChangeDetectorRef,
-	) {}
+		private injector: Injector,
+	) {
+		effect(() => {
+			if (!this.virtualScroll || !this.scrollElementSignal() || this.virtualizerRef()) return;
+			import('./virtual-provider').then((m) => {
+				runInInjectionContext(this.injector, () => {
+					const v = m.injectVirtualizer(() => ({
+						count: this.table ? this.table.getRowModel().rows.length : 0,
+						scrollElement: this.scrollElementSignal() || undefined,
+						estimateSize: () => this.rowHeight,
+						overscan: this.virtualScrollBufferSize,
+					}));
+					this.virtualizerRef.set(v);
+					this.cdr.markForCheck();
+				});
+			});
+		});
+	}
 
 	ngOnInit(): void {
 		this.dataSignal.set(this.data);
@@ -462,7 +478,10 @@ export class TanGrid<T = any> implements OnInit, OnChanges, AfterViewInit, OnDes
 			this.onGlobalSearch(this.globalFilter);
 		}
 		if (changes['reorderable']) {
-			this._initSortable();
+			void this._initSortable();
+		}
+		if (changes['virtualScroll'] && !this.virtualScroll) {
+			this.virtualizerRef.set(null);
 		}
 	}
 
@@ -1509,13 +1528,14 @@ export class TanGrid<T = any> implements OnInit, OnChanges, AfterViewInit, OnDes
 		});
 	}
 
-	private _initSortable() {
+	private async _initSortable(): Promise<void> {
 		if (this._sortable) {
 			this._sortable.destroy();
 			this._sortable = null;
 		}
 
 		if (this.reorderable && this.headerRowContainer?.nativeElement) {
+			const { default: Sortable } = await import('sortablejs');
 			this._sortable = new Sortable(this.headerRowContainer.nativeElement, {
 				animation: 150,
 				onEnd: (evt: any) => {
@@ -1523,10 +1543,8 @@ export class TanGrid<T = any> implements OnInit, OnChanges, AfterViewInit, OnDes
 					if (oldIndex !== newIndex && this.table) {
 						const visibleColumns = this.table.getVisibleLeafColumns();
 						const columnIds = visibleColumns.map((c) => c.id);
-						
 						const [moved] = columnIds.splice(oldIndex, 1);
 						columnIds.splice(newIndex, 0, moved);
-						
 						this.table.setColumnOrder(columnIds);
 					}
 				}

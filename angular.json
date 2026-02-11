@@ -88,7 +88,11 @@
                                 "styles": [
                                     "demo/src/style/app.scss",
                                     "src/styles/_variables.scss",
-                                    "src/table/table.component.scss"
+                                    "src/table/table.component.scss",
+                                    "src/table/themes/material.theme.scss",
+                                    "src/table/themes/bootstrap.theme.scss",
+                                    "src/table/themes/ant.theme.scss",
+                                    "src/table/themes/ant-alt.theme.scss"
                                 ],
                                 "scripts": []
 					},

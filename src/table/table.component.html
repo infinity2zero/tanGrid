@@ -257,11 +257,12 @@
 							class="tan-grid__virtual-viewport"
 							style="overflow-y: auto; contain: strict;"
 						>
+							@if (virtualizerRef(); as v) {
 							<div
-								[style.height.px]="virtualizer.getTotalSize()"
+								[style.height.px]="v.getTotalSize()"
 								style="position: relative; width: 100%;"
 							>
-								@for (virtualRow of virtualizer.getVirtualItems(); track virtualRow.index) {
+								@for (virtualRow of v.getVirtualItems(); track virtualRow.index) {
 									<div
 										*ngIf="table.getRowModel().rows[virtualRow.index] as row"
 										class="tan-grid__row tan-grid__row--virtual"
@@ -344,6 +345,7 @@
 									</div>
 								}
 							</div>
+							}
 						</div>
 					}
 				</div>

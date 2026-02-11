@@ -1,6 +1,5 @@
 import { Component, Input, ElementRef, AfterViewInit, ViewChild, OnChanges, SimpleChanges, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import sdk, { Project } from '@stackblitz/sdk';
 import { StackBlitzService } from '../../services/stackblitz.service';
 
 @Component({
@@ -79,7 +78,7 @@ export class StackBlitzEmbedComponent implements AfterViewInit, OnChanges, OnDes
     }, 100);
   }
 
-  private embedProject(): void {
+  private async embedProject(): Promise<void> {
     // Check if element is available
     if (!this.embedContainer?.nativeElement) {
       return;
@@ -110,6 +109,9 @@ export class StackBlitzEmbedComponent implements AfterViewInit, OnChanges, OnDes
 
       // Clear previous content
       element.innerHTML = '';
+
+      // Lazy-load StackBlitz SDK only when embedding (saves ~180KB from initial bundle)
+      const { default: sdk } = await import('@stackblitz/sdk');
 
       // Embed the project
       sdk.embedProject(element, project, {

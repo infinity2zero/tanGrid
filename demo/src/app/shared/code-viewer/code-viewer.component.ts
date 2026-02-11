@@ -277,6 +277,6 @@ export class CodeViewerComponent {
 			}
 		}
 
-		this.stackBlitzService.openProject(name, files, this.title, 'TanGrid library demo', selector);
+		void this.stackBlitzService.openProject(name, files, this.title, 'TanGrid library demo', selector).catch(() => {});
 	}
 }
